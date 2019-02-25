@@ -1,4 +1,6 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'pages.dart';
 
 class LoginPage extends StatefulWidget {
   LoginPage({Key key}) : super(key: key);
@@ -81,7 +83,11 @@ class _LoginPageState extends State<LoginPage> {
                   height: 50.0,
                   child:  RaisedButton(
                   color: Colors.pink,
-                  onPressed: (){},
+                  onPressed: (){
+                     Navigator.push(context, CupertinoPageRoute(
+                          builder: (context)=>ShoppingPage()
+                        ));
+                  },
                   child: Text('Log in',style: TextStyle(color: Colors.white,fontSize: 20.0),),
                 ),
                 ),
