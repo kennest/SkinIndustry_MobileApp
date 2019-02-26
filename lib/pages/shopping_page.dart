@@ -1,7 +1,6 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
-import 'package:mobile_ecommerce/pages/ui/category_grid.dart';
+import 'package:mobile_ecommerce/pages/pages.dart';
 
 class ShoppingPage extends StatefulWidget {
   ShoppingPage({Key key}) : super(key: key);
@@ -18,31 +17,30 @@ class _ShoppingPageState extends State<ShoppingPage>
   List<dynamic> products;
   List<dynamic> categories;
 
- String productsJson =
-    '{"last": [{"product_id":"62","thumb":"sandwich.png","name":"Test Tilte","price":"\$55.00"}, '
-    '{"product_id":"61","thumb":"sandwich.png","name":"Test Tilte","price":"\$55.00"}, '
-    '{"product_id":"57","thumb":"sandwich.png","name":"Test Tilte","price":"\$55.00"}, '
-    '{"product_id":"63","thumb":"sandwich.png","name":"Test Tilte","price":"\$55.00"}, '
-    '{"product_id":"64","thumb":"sandwich.png","name":"Test Tilte","price":"\$55.00"}, '
-    '{"product_id":"58","thumb":"sandwich.png","name":"Test Tilte","price":"\$55.00"}, '
-    '{"product_id":"59","thumb":"sandwich.png","name":"Test Tilte","price":"\$55.00"}]}';
+  String productsJson =
+      '{"last": [{"product_id":"62","thumb":"https://www.soriabel.be/files/17667/products/8810505/skincare_50g.jpg","name":"Test Tilte","price":"\$55.00"}, '
+      '{"product_id":"61","thumb":"https://www.revolutionbeauty.com/Images/Models/150/6692.jpg","name":"Test Tilte","price":"\$55.00"}, '
+      '{"product_id":"57","thumb":"https://www.revolutionbeauty.com/Images/Models/Full/6687.jpg","name":"Test Tilte","price":"\$55.00"}, '
+      '{"product_id":"63","thumb":"https://www.revolutionbeauty.com/Images/Models/Full/6699.jpg","name":"Test Tilte","price":"\$55.00"}, '
+      '{"product_id":"64","thumb":"https://www.maquibeauty.fr/images/productos/revolution-skincare-aceite-de-semilla-de-rosa-mosqueta-gold-elixir-2-39713.jpeg","name":"Test Tilte","price":"\$55.00"}, '
+      '{"product_id":"58","thumb":"https://www.revolutionbeauty.com/Images/Models/Full/6693.Jpg","name":"Test Tilte","price":"\$55.00"}]}';
 
-String categoriesJson = '{"categories":['
-    '{"name":"Category 1","image":"icon.png","id":2}, '
-    '{"name":"Category 2","image":"icon.png","id":4}, '
-    '{"name":"Category 3","image":"icon.png","id":4}, '
-    '{"name":"Category 4","image":"icon.png","id":4}, '
-    '{"name":"Category 5","image":"icon.png","id":6}]}';
+  String categoriesJson = '{"categories":['
+      '{"name":"Pommades","image":"icon.png","id":2}, '
+      '{"name":"Huiles","image":"icon.png","id":4}, '
+      '{"name":"Maquillages","image":"icon.png","id":4}, '
+      '{"name":"Vernies","image":"icon.png","id":4}, '
+      '{"name":"Savons","image":"icon.png","id":6}]}';
 
   @override
   void initState() {
     super.initState();
-        Map<String, dynamic> decoded = json.decode(productsJson);
+    Map<String, dynamic> decoded = json.decode(productsJson);
     products = decoded['last'];
 
     Map<String, dynamic> decodedCategories = json.decode(categoriesJson);
     categories = decodedCategories['categories'];
-        tabController =
+    tabController =
         TabController(length: categories.length, vsync: this, initialIndex: 1);
   }
 
@@ -50,21 +48,60 @@ String categoriesJson = '{"categories":['
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: getAppBar(),
-      backgroundColor: Colors.transparent,
-      body:CustomScrollView(
+      backgroundColor: Color.fromARGB(255, 244, 244, 244),
+      body: CustomScrollView(
         controller: _scrollController,
         slivers: <Widget>[
           SliverToBoxAdapter(
-            child: Container(
-              color: Colors.white,
-              child:  TabBar(
-                isScrollable: true,
-                indicatorColor: Colors.pink,
-                controller: tabController,
-                tabs: getTabs(number: categories.length)
-              ),
-            )
-          ),
+              child: Container(
+                  color: Colors.white,
+                  child: Column(
+                    children: <Widget>[
+                      Material(
+                        color: backgroundColor,
+                        child: TabBar(
+                            indicatorSize: TabBarIndicatorSize.label,
+                            labelStyle: TextStyle(
+                                fontSize: 25.0, fontWeight: FontWeight.w600),
+                            isScrollable: true,
+                            unselectedLabelColor:
+                                Color.fromARGB(200, 200, 200, 200),
+                            unselectedLabelStyle: TextStyle(
+                                color: Colors.grey,
+                                fontSize: 16.0,
+                                fontWeight: FontWeight.w600),
+                            indicatorColor: Colors.pink,
+                            controller: tabController,
+                            tabs: getTabs(number: categories.length)),
+                      ),
+                      Material(
+                        color: backgroundColor,
+                        child: Padding(
+                          padding: EdgeInsets.fromLTRB(15.0, 20.0, 15.0, 10.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: <Widget>[
+                              Text(
+                                '${products.length} products',
+                                style: TextStyle(fontWeight: FontWeight.w500),
+                              ),
+                              new DropdownButton<String>(
+                                value: 'Popular',
+                                items: <String>['Popular', 'Recents']
+                                    .map((String value) {
+                                  return DropdownMenuItem<String>(
+                                    value: value,
+                                    child: Text(value),
+                                  );
+                                }).toList(),
+                                onChanged: (_) {},
+                              ),
+                            ],
+                          ),
+                        ),
+                      )
+                    ],
+                  ))),
           SliverGrid(
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 2,
@@ -74,16 +111,7 @@ String categoriesJson = '{"categories":['
               (BuildContext context, int index) {
                 Map<String, String> product =
                     products[index].cast<String, String>();
-                return Card(
-                  child: Container(
-                    color: Colors.grey[400],
-                    child: Padding(
-                      padding: EdgeInsets.symmetric(vertical: 30.0),
-                      child: Center(
-                          child: Text("Product ${product["product_id"]}")),
-                    ),
-                  ),
-                );
+                return cardItem(product['thumb']);
               },
               childCount: products.length,
             ),
@@ -96,21 +124,18 @@ String categoriesJson = '{"categories":['
   List<Widget> getTabView({int number}) {
     List<Widget> tabviews = [];
     for (var i = 0; i < number; i++) {
-      tabviews.add(new CategoryGrid(
-        category: "Sofa",
-      ));
+      tabviews.add(null);
     }
     return tabviews;
   }
 
   List<Widget> getTabs({int number}) {
-   
     List<Widget> tabs = [];
     for (var i = 0; i < number; i++) {
-       Map<String, String> category =
-                      categories[i].cast<String, String>();
+      Map<String, String> category = categories[i].cast<String, String>();
       tabs.add(Tab(
-        child: Text('${category['name']}', style: TextStyle(color: Colors.black)),
+        child:
+            Text('${category['name']}', style: TextStyle(color: Colors.black)),
       ));
     }
     return tabs;
@@ -121,7 +146,7 @@ String categoriesJson = '{"categories":['
       iconTheme: IconThemeData(
         color: Colors.pinkAccent, //change your color here
       ),
-      backgroundColor: Colors.white,
+      backgroundColor: backgroundColor,
       elevation: 0.0,
       actions: <Widget>[
         IconButton(
@@ -135,6 +160,55 @@ String categoriesJson = '{"categories":['
           onPressed: () {},
         )
       ],
+    );
+  }
+
+  Widget cardItem(String imgPath) {
+    return Card(
+      color: Colors.white,
+      child: Stack(
+        fit: StackFit.passthrough,
+        overflow: Overflow.visible,
+        children: <Widget>[
+          Stack(
+            children: <Widget>[
+              Column(
+                children: <Widget>[
+                  Container(
+                      height: 130.0,
+                      width: 250.0,
+                      decoration: BoxDecoration(
+                          image: DecorationImage(
+                              image: NetworkImage(imgPath), fit: BoxFit.cover)),
+                      ),
+                      ListTile(
+                          onTap: () {},
+                          leading: Text('Title'),
+                          title: Text('Other title'),
+                          subtitle: Text('Subtitle'),
+                        ),
+                ],
+              ),
+              
+            ],
+          ),
+          Positioned(
+                top: 180.0,
+                left: 80.0,
+                child: RaisedButton(
+                  highlightColor: Colors.pink,
+                  splashColor: Colors.pink,
+                  color: Colors.pink,
+                  child: Icon(
+                    Icons.add_shopping_cart,
+                    size: 20.0,
+                    color: Colors.white,
+                  ),
+                  onPressed: () {},
+                ),
+              )
+        ],
+      ),
     );
   }
 }
