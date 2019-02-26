@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'pages.dart';
+import 'package:spinner_input/spinner_input.dart';
 
 class ProductDetailPage extends StatefulWidget {
   final String imgPath;
@@ -10,6 +11,7 @@ class ProductDetailPage extends StatefulWidget {
 }
 
 class _ProductDetailPageState extends State<ProductDetailPage> {
+  double spinner = 0;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -19,7 +21,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
         shrinkWrap: true,
         children: <Widget>[
           Container(
-            height: MediaQuery.of(context).size.height-130.0,
+            height: MediaQuery.of(context).size.height - 130.0,
             width: MediaQuery.of(context).size.width,
             child: Hero(
                 tag: widget.imgPath,
@@ -29,7 +31,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                       height: 300.0,
                       width: double.infinity,
                       decoration: BoxDecoration(
-                        shape: BoxShape.rectangle,
+                          shape: BoxShape.rectangle,
                           image: DecorationImage(
                               image: NetworkImage(widget.imgPath),
                               fit: BoxFit.cover)),
@@ -60,12 +62,30 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                 )),
           ),
           Container(
-              color: Colors.white,
+              color: backgroundColor,
               child: Align(
                 alignment: Alignment.bottomCenter,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
+                    Container(
+                margin: EdgeInsets.all(20),
+                child: SpinnerInput(
+                  minValue: 0,
+                  maxValue: 200,
+                  step: 1,
+                  plusButton: SpinnerButtonStyle(elevation: 0, color: Colors.pink[100], borderRadius: BorderRadius.circular(32.0)),
+                  minusButton: SpinnerButtonStyle(elevation: 0, color: Colors.pink.withOpacity(0.5), borderRadius: BorderRadius.circular(32.0)),
+                  middleNumberWidth: 70,
+                  middleNumberStyle: TextStyle(fontSize: 21),
+                  spinnerValue: spinner,
+                  onChange: (newValue) {
+                    setState(() {
+                      spinner = newValue;
+                    });
+                  },
+                ),
+              ),
                     SizedBox(
                       width: double.infinity,
                       height: 50.0,
