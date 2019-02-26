@@ -188,27 +188,29 @@ class _ShoppingPageState extends State<ShoppingPage>
                                     image: NetworkImage(imgPath),
                                     fit: BoxFit.cover)),
                           ),
-                          ListTile(
-                            onTap: () {
-                              Navigator.push(
-                                  context,
-                                  CupertinoPageRoute(
-                                      builder: (context) => ProductDetailPage(
-                                            imgPath: imgPath,
-                                          )));
-                            },
-                            title: Text('Other title'),
-                            subtitle: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
-                                Text('Subtitle'),
-                                Text(
-                                  '300 Eur',
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.w700,
-                                      fontSize: 15.0),
-                                )
-                              ],
+                          Material(
+                            child: ListTile(
+                              onTap: () {
+                                Navigator.push(
+                                    context,
+                                    CupertinoPageRoute(
+                                        builder: (context) => ProductDetailPage(
+                                              imgPath: imgPath,
+                                            )));
+                              },
+                              title: Text('Other title'),
+                              subtitle: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: <Widget>[
+                                  Text('Subtitle'),
+                                  Text(
+                                    '300 Eur',
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.w700,
+                                        fontSize: 15.0),
+                                  )
+                                ],
+                              ),
                             ),
                           ),
                         ],

@@ -20,36 +20,40 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
             height: MediaQuery.of(context).size.height,
             width: MediaQuery.of(context).size.width,
             child: Hero(
-              tag: widget.imgPath,
-              child: Column(
-                children: <Widget>[
-                  Container(
-                    height: 250.0,
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                        image: DecorationImage(
-                            image: NetworkImage(widget.imgPath),
-                            fit: BoxFit.cover)),
-                  ),
-                  ListTile(
-                    title: Text('Other title',
-                        style: TextStyle(
-                            fontWeight: FontWeight.w700, fontSize: 25.0)),
-                    subtitle: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Text('Subtitle',style: TextStyle(
-                              fontWeight: FontWeight.w400, fontSize: 15.0)),
-                        Text(
-                          '300 Eur',
-                          style: TextStyle(
-                              fontWeight: FontWeight.w700, fontSize: 18.0),
-                        )
-                      ],
+                tag: widget.imgPath,
+                child: Column(
+                  children: <Widget>[
+                    Container(
+                      height: 250.0,
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                          image: DecorationImage(
+                              image: NetworkImage(widget.imgPath),
+                              fit: BoxFit.cover)),
                     ),
-                  )
-                ],
-              )),
+                    Material(
+                      child: ListTile(
+                        title: Text('Other title',
+                            style: TextStyle(
+                                fontWeight: FontWeight.w700, fontSize: 25.0)),
+                        subtitle: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Text('Subtitle',
+                                style: TextStyle(
+                                    fontWeight: FontWeight.w400,
+                                    fontSize: 15.0)),
+                            Text(
+                              '300 Eur',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.w700, fontSize: 18.0),
+                            )
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
+                )),
           ),
         ],
       ),
