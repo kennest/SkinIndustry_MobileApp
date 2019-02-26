@@ -37,13 +37,13 @@ String categoriesJson = '{"categories":['
   @override
   void initState() {
     super.initState();
-    tabController =
-        TabController(length: number_category, vsync: this, initialIndex: 1);
         Map<String, dynamic> decoded = json.decode(productsJson);
     products = decoded['last'];
 
     Map<String, dynamic> decodedCategories = json.decode(categoriesJson);
     categories = decodedCategories['categories'];
+        tabController =
+        TabController(length: categories.length, vsync: this, initialIndex: 1);
   }
 
   @override
@@ -55,29 +55,15 @@ String categoriesJson = '{"categories":['
         controller: _scrollController,
         slivers: <Widget>[
           SliverToBoxAdapter(
-            child: SizedBox(
-              height: 120.0,
-              child: ListView.builder(
-                scrollDirection: Axis.horizontal,
-                itemBuilder: (context, index) {
-                  Map<String, String> category =
-                      categories[index].cast<String, String>();
-                  return Card(
-                    child: Container(
-                      height: double.infinity,
-                      color: Colors.grey[200],
-                      child: Center(
-                        child: Padding(
-                          padding: EdgeInsets.all(30.0),
-                          child: Text(category["name"]),
-                        ),
-                      ),
-                    ),
-                  );
-                },
-                itemCount: categories.length,
+            child: Container(
+              color: Colors.white,
+              child:  TabBar(
+                isScrollable: true,
+                indicatorColor: Colors.pink,
+                controller: tabController,
+                tabs: getTabs(number: categories.length)
               ),
-            ),
+            )
           ),
           SliverGrid(
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
@@ -118,10 +104,13 @@ String categoriesJson = '{"categories":['
   }
 
   List<Widget> getTabs({int number}) {
+   
     List<Widget> tabs = [];
     for (var i = 0; i < number; i++) {
+       Map<String, String> category =
+                      categories[i].cast<String, String>();
       tabs.add(Tab(
-        child: Text('Sofa', style: TextStyle(color: Colors.black)),
+        child: Text('${category['name']}', style: TextStyle(color: Colors.black)),
       ));
     }
     return tabs;
