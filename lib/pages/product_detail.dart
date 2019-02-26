@@ -86,9 +86,13 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                   },
                 ),
               ),
-                    SizedBox(
-                      width: double.infinity,
+                    Container(
+                      width: 350.0,
                       height: 50.0,
+                      padding: EdgeInsets.only(bottom: 8.0),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(35.0),
+                      ),
                       child: FlatButton(
                         onPressed: () {},
                         color: Colors.pink,
