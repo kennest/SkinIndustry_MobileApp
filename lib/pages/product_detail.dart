@@ -13,25 +13,29 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: backgroundColor,
       appBar: getAppBar(),
       body: ListView(
+        shrinkWrap: true,
         children: <Widget>[
           Container(
-            height: MediaQuery.of(context).size.height,
+            height: MediaQuery.of(context).size.height-130.0,
             width: MediaQuery.of(context).size.width,
             child: Hero(
                 tag: widget.imgPath,
                 child: Column(
                   children: <Widget>[
                     Container(
-                      height: 250.0,
+                      height: 300.0,
                       width: double.infinity,
                       decoration: BoxDecoration(
+                        shape: BoxShape.rectangle,
                           image: DecorationImage(
                               image: NetworkImage(widget.imgPath),
                               fit: BoxFit.cover)),
                     ),
                     Material(
+                      color: backgroundColor,
                       child: ListTile(
                         title: Text('Other title',
                             style: TextStyle(
@@ -55,6 +59,29 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                   ],
                 )),
           ),
+          Container(
+              color: Colors.white,
+              child: Align(
+                alignment: Alignment.bottomCenter,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    SizedBox(
+                      width: double.infinity,
+                      height: 50.0,
+                      child: FlatButton(
+                        onPressed: () {},
+                        color: Colors.pink,
+                        splashColor: Colors.pink[100],
+                        child: Text(
+                          'Add to Cart',
+                          style: TextStyle(color: Colors.white),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ))
         ],
       ),
     );

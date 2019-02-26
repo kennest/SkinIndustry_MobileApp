@@ -189,6 +189,7 @@ class _ShoppingPageState extends State<ShoppingPage>
                                     fit: BoxFit.cover)),
                           ),
                           Material(
+                            color: Colors.white,
                             child: ListTile(
                               onTap: () {
                                 Navigator.push(
