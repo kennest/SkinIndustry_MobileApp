@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile_ecommerce/pages/pages.dart';
 
@@ -165,39 +166,65 @@ class _ShoppingPageState extends State<ShoppingPage>
 
   Widget cardItem(String imgPath) {
     return Card(
+      margin: EdgeInsets.all(8.0),
       color: Colors.white,
       child: Stack(
-        fit: StackFit.passthrough,
+        fit: StackFit.expand,
         overflow: Overflow.visible,
         children: <Widget>[
           Stack(
             children: <Widget>[
               Column(
                 children: <Widget>[
-                  Container(
-                      height: 130.0,
-                      width: 250.0,
-                      decoration: BoxDecoration(
-                          image: DecorationImage(
-                              image: NetworkImage(imgPath), fit: BoxFit.cover)),
-                      ),
-                      ListTile(
-                          onTap: () {},
-                          leading: Text('Title'),
-                          title: Text('Other title'),
-                          subtitle: Text('Subtitle'),
-                        ),
+                  Hero(
+                      tag: imgPath,
+                      child: Column(
+                        children: <Widget>[
+                          Container(
+                            height: 130.0,
+                            width: 250.0,
+                            decoration: BoxDecoration(
+                                image: DecorationImage(
+                                    image: NetworkImage(imgPath),
+                                    fit: BoxFit.cover)),
+                          ),
+                          ListTile(
+                            onTap: () {
+                              Navigator.push(
+                                  context,
+                                  CupertinoPageRoute(
+                                      builder: (context) => ProductDetailPage(
+                                            imgPath: imgPath,
+                                          )));
+                            },
+                            title: Text('Other title'),
+                            subtitle: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                Text('Subtitle'),
+                                Text(
+                                  '300 Eur',
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.w700,
+                                      fontSize: 15.0),
+                                )
+                              ],
+                            ),
+                          ),
+                        ],
+                      )),
                 ],
               ),
-              
             ],
           ),
           Positioned(
-                top: 180.0,
-                left: 80.0,
+              top: 180.0,
+              left: 120.0,
+              child: SizedBox(
+                width: 50.0,
                 child: RaisedButton(
                   highlightColor: Colors.pink,
-                  splashColor: Colors.pink,
+                  splashColor: Colors.pink[100],
                   color: Colors.pink,
                   child: Icon(
                     Icons.add_shopping_cart,
@@ -206,7 +233,7 @@ class _ShoppingPageState extends State<ShoppingPage>
                   ),
                   onPressed: () {},
                 ),
-              )
+              ))
         ],
       ),
     );
