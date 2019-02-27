@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'pages.dart';
 import 'package:spinner_input/spinner_input.dart';
@@ -27,15 +28,16 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                 tag: widget.imgPath,
                 child: Column(
                   children: <Widget>[
-                    Container(
-                      height: 300.0,
-                      width: double.infinity,
-                      decoration: BoxDecoration(
-                          shape: BoxShape.rectangle,
-                          image: DecorationImage(
-                              image: NetworkImage(widget.imgPath),
-                              fit: BoxFit.cover)),
-                    ),
+                   CachedNetworkImage(
+                     fit: BoxFit.cover,
+                            height: 300,
+                            width: MediaQuery.of(context).size.width,
+                            imageUrl: widget.imgPath,
+                            placeholder: (context, url) =>
+                                 CircularProgressIndicator(),
+                            errorWidget: (context, url, error) =>
+                                 Icon(Icons.error),
+                          ),
                     Material(
                       color: backgroundColor,
                       child: ListTile(

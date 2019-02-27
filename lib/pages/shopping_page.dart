@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile_ecommerce/pages/pages.dart';
@@ -180,13 +181,14 @@ class _ShoppingPageState extends State<ShoppingPage>
                       tag: imgPath,
                       child: Column(
                         children: <Widget>[
-                          Container(
+                           CachedNetworkImage(
                             height: 130.0,
                             width: 250.0,
-                            decoration: BoxDecoration(
-                                image: DecorationImage(
-                                    image: NetworkImage(imgPath),
-                                    fit: BoxFit.cover)),
+                            imageUrl: imgPath,
+                            placeholder: (context, url) =>
+                                 CircularProgressIndicator(),
+                            errorWidget: (context, url, error) =>
+                                 Icon(Icons.error),
                           ),
                           Material(
                             color: Colors.white,
@@ -226,22 +228,22 @@ class _ShoppingPageState extends State<ShoppingPage>
               child: Container(
                 width: 35.0,
                 height: 35.0,
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                       color: Colors.pink,
-                    ),
-                    child: IconButton(
-                      highlightColor: Colors.pink,
-                      splashColor: Colors.pink[100],
-                      color: Colors.pink,
-                      icon: Icon(
-                        Icons.add_shopping_cart,
-                        size: 20.0,
-                        color: Colors.white,
-                      ),
-                      onPressed: () {},
-                    ),
-                ))
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: Colors.pink,
+                ),
+                child: IconButton(
+                  highlightColor: Colors.pink,
+                  splashColor: Colors.pink[100],
+                  color: Colors.pink,
+                  icon: Icon(
+                    Icons.add_shopping_cart,
+                    size: 20.0,
+                    color: Colors.white,
+                  ),
+                  onPressed: () {},
+                ),
+              ))
         ],
       ),
     );
