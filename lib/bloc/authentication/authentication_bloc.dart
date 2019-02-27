@@ -8,6 +8,8 @@ class AuthenticationBloc extends Bloc<AuthEvent, AuthenticationState> {
 
   @override
   Stream<AuthenticationState> mapEventToState(AuthenticationState currentState, AuthEvent event) async* {
-   
+   if(event is LoggedIn){
+     
+   }
   }
 }

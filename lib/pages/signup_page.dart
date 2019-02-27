@@ -1,14 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'pages.dart';
+class SignupPage extends StatefulWidget {
 
-class LoginPage extends StatefulWidget {
-  LoginPage({Key key}) : super(key: key);
+  SignupPage({Key key}) : super(key: key);
 
-  _LoginPageState createState() => _LoginPageState();
+  _SignupPageState createState() => _SignupPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _SignupPageState extends State<SignupPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -17,12 +17,12 @@ class _LoginPageState extends State<LoginPage> {
           Align(
             alignment: Alignment.topRight,
             child: FlatButton(
-              onPressed: () {
-                 Navigator.push(context, CupertinoPageRoute(
-                          builder: (context)=>SignupPage()
+               onPressed: (){
+                     Navigator.push(context, CupertinoPageRoute(
+                          builder: (context)=>LoginPage()
                         ));
-              },
-              child: Text('Sign Up'),
+                  },
+              child: Text('Log In'),
             ),
           ),
           Align(
@@ -44,6 +44,15 @@ class _LoginPageState extends State<LoginPage> {
             padding: EdgeInsets.fromLTRB(20.0, 30.0, 20.0, 0.0),
             child: Column(
               children: <Widget>[
+                 TextFormField(
+                  keyboardType: TextInputType.text,
+                  decoration: InputDecoration(
+                    labelText: "Your Username",
+                  ),
+                ),
+                 SizedBox(
+                  height: 5.0,
+                ),
                 TextFormField(
                   keyboardType: TextInputType.emailAddress,
                   decoration: InputDecoration(
@@ -54,33 +63,33 @@ class _LoginPageState extends State<LoginPage> {
                   height: 5.0,
                 ),
                 TextFormField(
-                  keyboardType: TextInputType.emailAddress,
+                  keyboardType: TextInputType.text,
                   obscureText: true,
                   decoration: InputDecoration(
                     labelText: "Your Password",
                   ),
                 ),
-                Align(
-                  alignment: Alignment.bottomLeft,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      Row(
-                        children: <Widget>[
-                          Switch(
-                            onChanged: _onchanged(),
-                            value: true,
-                            activeColor: Colors.pinkAccent,
-                          ),
-                          Text('Remember me')
-                        ],
-                      ),
-                      FlatButton(
-                        onPressed: () {},
-                        child: Text('Forgot?'),
-                      )
-                    ],
+                SizedBox(
+                  height: 5.0,
+                ),
+                 TextFormField(
+                  keyboardType: TextInputType.text,
+                  obscureText: true,
+                  decoration: InputDecoration(
+                    labelText: "Confirm Password",
                   ),
+                ),
+                SizedBox(
+                  height: 5.0,
+                ),
+                TextFormField(
+                  keyboardType: TextInputType.text,
+                  decoration: InputDecoration(
+                    labelText: "Your Number",
+                  ),
+                ),
+                SizedBox(
+                  height: 20.0,
                 ),
                 SizedBox(
                   width: 300.0,
@@ -92,7 +101,7 @@ class _LoginPageState extends State<LoginPage> {
                           builder: (context)=>ShoppingPage()
                         ));
                   },
-                  child: Text('Log in',style: TextStyle(color: Colors.white,fontSize: 20.0),),
+                  child: Text('Sign Up',style: TextStyle(color: Colors.white,fontSize: 20.0),),
                 ),
                 ),
                   
@@ -100,7 +109,7 @@ class _LoginPageState extends State<LoginPage> {
             ),
           ),
            Container(
-                  height: 250.0,
+                  height: 150.0,
                   margin: EdgeInsets.only(top: 25.0),
                   decoration: BoxDecoration(
                     image: DecorationImage(
@@ -113,6 +122,4 @@ class _LoginPageState extends State<LoginPage> {
       ),
     );
   }
-
-  _onchanged() {}
 }
