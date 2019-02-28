@@ -18,16 +18,16 @@ class ProductError extends ProductState {
 
 class ProductLoaded extends ProductState {
   final List<Product> products;
-final List<Category> categories;
-  ProductLoaded({this.categories, 
+  final List<Category> categories;
+  ProductLoaded({
+    this.categories,
     this.products,
   }) : super([products]);
 
-  ProductLoaded copyWith({
-    List<Product> products,
-    List<Category> categories
-  }) {
-    return ProductLoaded(products: products ?? this.products,categories:categories??this.categories );
+  ProductLoaded copyWith({List<Product> products, List<Category> categories}) {
+    return ProductLoaded(
+        products: products ?? this.products,
+        categories: categories ?? this.categories);
   }
 
   @override

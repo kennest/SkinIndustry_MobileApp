@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -18,14 +17,14 @@ class ShoppingPage extends StatefulWidget {
 
 class _ShoppingPageState extends State<ShoppingPage>
     with TickerProviderStateMixin {
-  var tabController;
+  TabController tabController;
   final ScrollController _scrollController = ScrollController();
   ProductsBloc productBloc = ProductsBloc();
 
   @override
   void initState() {
     super.initState();
-    productBloc.dispatch(Fetch());
+    productBloc.dispatch(Fetch(categoryId: 1));
   }
 
   @override
@@ -45,6 +44,21 @@ class _ShoppingPageState extends State<ShoppingPage>
                   length: state.categories.length,
                   vsync: this,
                   initialIndex: 1);
+              if (state.products.length == 0) {
+                return Center(
+                  child: IconButton(
+                    highlightColor: Colors.pink[100],
+                    splashColor: Colors.pink[200],
+                    icon: Icon(
+                      Icons.refresh,
+                      color: Colors.pink[400],
+                    ),
+                    onPressed: () {
+                      productBloc.dispatch(Fetch(categoryId: 1));
+                    },
+                  ),
+                );
+              }
               return CustomScrollView(
                 controller: _scrollController,
                 slivers: <Widget>[
@@ -129,6 +143,8 @@ class _ShoppingPageState extends State<ShoppingPage>
     }
     return tabviews;
   }
+
+  _loadOtherProducts() {}
 
   List<Widget> getTabs(List<Category> categories) {
     List<Widget> tabs = [];

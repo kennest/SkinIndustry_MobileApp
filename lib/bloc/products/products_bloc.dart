@@ -13,9 +13,9 @@ class ProductsBloc extends Bloc<ProductEvent, ProductState> {
   Stream<ProductState> mapEventToState(ProductState currentState, ProductEvent event) async* {
     if(event is Fetch){
       try{
-      final products= await api.fetchProducts();
+      final products= await api.fetchProducts(categoryId: 1);
       final categories= await api.fetchCategories();
-      yield ProductLoaded(categories:categories,products: products,);
+      yield ProductLoaded(categories:categories,products: products);
       }catch(_){
         yield ProductError();
       }

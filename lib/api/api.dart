@@ -9,27 +9,33 @@ class Api {
   List<Product> products = [];
   List<Category> categories = [];
 
-  Future<List<Product>> fetchProducts() async {
-    http.get('${url}products').then((data) {
-      print(data.body);
-      var jsonData = json.decode(data.body) as List;
+  Future<List<Product>> fetchProducts({int categoryId = 1}) async {
+    final response = await http.get('${url}products');
+    if (response.statusCode == 200) {
+      print(response.body);
+      var jsonData = json.decode(response.body) as List;
 
       jsonData.forEach((n) {
         print("**************");
         print(n);
         print("**************");
-         Product p = Product.fromJson(n);
+        Product p = Product.fromJson(n);
         products.add(p);
       });
- 
-    });
+
+      products = products.where((p) => (p.categoryId == categoryId)).toList();
+      print("******Products filtered********");
+      print(products.length);
+      print("******Products filtered********");
+    }
     return products;
   }
 
   Future<List<Category>> fetchCategories() async {
-    http.get('${url}categories').then((data) {
-      print(data.body);
-      var jsonData = json.decode(data.body) as List;
+    final response = await http.get('${url}categories');
+    if (response.statusCode == 200) {
+      print(response.body);
+      var jsonData = json.decode(response.body) as List;
 
       jsonData.forEach((n) {
         print("**************");
@@ -39,7 +45,7 @@ class Api {
         Category c = Category.fromJson(n);
         categories.add(c);
       });
-    });
+    }
     return categories;
   }
 }
