@@ -6,10 +6,11 @@ import 'package:mobile_ecommerce/models/product.dart';
 
 class Api {
   var url = "https://my-json-server.typicode.com/kennest/json-db/";
-  List<Product> products = [];
+ 
   List<Category> categories = [];
 
-  Future<List<Product>> fetchProducts({int categoryId = 1}) async {
+  Future<List<Product>> fetchProducts({int categoryId=1}) async {
+     List<Product> products = [];
     final response = await http.get('${url}products');
     if (response.statusCode == 200) {
       print(response.body);

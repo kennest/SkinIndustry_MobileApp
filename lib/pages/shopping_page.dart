@@ -20,6 +20,7 @@ class _ShoppingPageState extends State<ShoppingPage>
   TabController tabController;
   final ScrollController _scrollController = ScrollController();
   ProductsBloc productBloc = ProductsBloc();
+  int selectedtab=0;
 
   @override
   void initState() {
@@ -43,7 +44,7 @@ class _ShoppingPageState extends State<ShoppingPage>
               tabController = TabController(
                   length: state.categories.length,
                   vsync: this,
-                  initialIndex: 1);
+                  initialIndex: selectedtab);
               if (state.products.length == 0) {
                 return Center(
                   child: IconButton(
@@ -144,13 +145,19 @@ class _ShoppingPageState extends State<ShoppingPage>
     return tabviews;
   }
 
-  _loadOtherProducts() {}
-
   List<Widget> getTabs(List<Category> categories) {
     List<Widget> tabs = [];
     for (var c in categories) {
       tabs.add(Tab(
-        child: Text('${c.name}', style: TextStyle(color: Colors.black)),
+        child: FlatButton(
+          child: Text('${c.name}', style: TextStyle(color: Colors.black)),
+          onPressed: () {
+            print('${tabController.index} /${c.id}');
+            selectedtab=(c.id-1);
+            tabController.animateTo(c.id-1);
+            productBloc.dispatch(Fetch(categoryId: c.id));
+          },
+        ),
       ));
     }
     return tabs;

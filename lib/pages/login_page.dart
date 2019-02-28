@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'pages.dart';
@@ -18,9 +19,8 @@ class _LoginPageState extends State<LoginPage> {
             alignment: Alignment.topRight,
             child: FlatButton(
               onPressed: () {
-                 Navigator.push(context, CupertinoPageRoute(
-                          builder: (context)=>SignupPage()
-                        ));
+                Navigator.push(context,
+                    CupertinoPageRoute(builder: (context) => SignupPage()));
               },
               child: Text('Sign Up'),
             ),
@@ -85,30 +85,33 @@ class _LoginPageState extends State<LoginPage> {
                 SizedBox(
                   width: 300.0,
                   height: 50.0,
-                  child:  RaisedButton(
-                  color: Colors.pink,
-                  onPressed: (){
-                     Navigator.push(context, CupertinoPageRoute(
-                          builder: (context)=>ShoppingPage()
-                        ));
-                  },
-                  child: Text('Log in',style: TextStyle(color: Colors.white,fontSize: 20.0),),
+                  child: RaisedButton(
+                    color: Colors.pink,
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          CupertinoPageRoute(
+                              builder: (context) => ShoppingPage()));
+                    },
+                    child: Text(
+                      'Log in',
+                      style: TextStyle(color: Colors.white, fontSize: 20.0),
+                    ),
+                  ),
                 ),
-                ),
-                  
               ],
             ),
           ),
-           Container(
-                  height: 250.0,
-                  margin: EdgeInsets.only(top: 25.0),
-                  decoration: BoxDecoration(
-                    image: DecorationImage(
-                      image: NetworkImage('https://3.bp.blogspot.com/-i3OIbIhSBcU/WevH6M1yPXI/AAAAAAAACDc/2_EtN0lcuAU0ubDtJ3khC0pMjAMysc2jQCEwYBhgL/s1600/IMG_9935.JPG'),
-                      fit: BoxFit.cover
-                    )
-                  ),
-                ) 
+          CachedNetworkImage(
+            height: 250.0,
+            fit: BoxFit.cover,
+            imageUrl:
+                'https://3.bp.blogspot.com/-i3OIbIhSBcU/WevH6M1yPXI/AAAAAAAACDc/2_EtN0lcuAU0ubDtJ3khC0pMjAMysc2jQCEwYBhgL/s1600/IMG_9935.JPG',
+            placeholder: (context, url) =>Center(
+              child: CircularProgressIndicator(),
+            ) ,
+            errorWidget: (context, url, error) => Icon(Icons.error),
+          ),
         ],
       ),
     );

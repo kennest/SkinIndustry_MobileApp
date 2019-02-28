@@ -44,21 +44,25 @@ class _SplashPageState extends State<SplashPage> {
                     ),
                   ),
                   Align(
-                    alignment: Alignment.bottomCenter,
-                    child: RaisedButton(
-                      elevation: 8.0,
-                      color: Colors.pink,
-                      onPressed: () {
-                        Navigator.push(context, CupertinoPageRoute(
-                          builder: (context)=>LoginPage()
-                        ));
-                      },
-                      child: Text(
-                        'Start shopping',
-                        style: TextStyle(color: Colors.white, fontSize: 15.0),
-                      ),
-                    ),
-                  ),
+                      alignment: Alignment.bottomCenter,
+                      child: SizedBox(
+                        height: 45.0,
+                        child: RaisedButton(
+                          elevation: 8.0,
+                          color: Colors.pink,
+                          onPressed: () {
+                            Navigator.push(
+                                context,
+                                CupertinoPageRoute(
+                                    builder: (context) => LoginPage()));
+                          },
+                          child: Text(
+                            'Start shopping',
+                            style:
+                                TextStyle(color: Colors.white, fontSize: 15.0),
+                          ),
+                        ),
+                      )),
                 ],
               ))
         ],

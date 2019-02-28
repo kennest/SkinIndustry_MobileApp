@@ -6,9 +6,9 @@ abstract class ProductEvent extends Equatable {
 }
 
 class Fetch extends ProductEvent {
-  final int categoryId;
+  int categoryId;
 
   Fetch({@required this.categoryId}):super([categoryId]);
   @override
-  String toString() => 'Fetch';
+  String toString() => 'Fetch : $categoryId';
 }
