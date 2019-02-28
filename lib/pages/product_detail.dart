@@ -1,12 +1,13 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:mobile_ecommerce/models/product.dart';
 import 'pages.dart';
 import 'package:spinner_input/spinner_input.dart';
 
 class ProductDetailPage extends StatefulWidget {
-  final String imgPath;
+  final Product product;
 
-  ProductDetailPage({Key key, this.imgPath}) : super(key: key);
+  ProductDetailPage({Key key, this.product}) : super(key: key);
 
   _ProductDetailPageState createState() => _ProductDetailPageState();
 }
@@ -25,14 +26,14 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
             height: MediaQuery.of(context).size.height - 130.0,
             width: MediaQuery.of(context).size.width,
             child: Hero(
-                tag: widget.imgPath,
+                tag: widget.product.picture,
                 child: Column(
                   children: <Widget>[
                    CachedNetworkImage(
                      fit: BoxFit.cover,
                             height: 300,
                             width: MediaQuery.of(context).size.width,
-                            imageUrl: widget.imgPath,
+                            imageUrl: widget.product.picture,
                             placeholder: (context, url) =>
                                  CircularProgressIndicator(),
                             errorWidget: (context, url, error) =>
@@ -41,18 +42,18 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                     Material(
                       color: backgroundColor,
                       child: ListTile(
-                        title: Text('Other title',
+                        title: Text(widget.product.title,
                             style: TextStyle(
                                 fontWeight: FontWeight.w700, fontSize: 25.0)),
                         subtitle: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
-                            Text('Subtitle',
+                            Text(widget.product.description,
                                 style: TextStyle(
                                     fontWeight: FontWeight.w400,
                                     fontSize: 15.0)),
                             Text(
-                              '300 Eur',
+                              '${widget.product.price} Eur',
                               style: TextStyle(
                                   fontWeight: FontWeight.w700, fontSize: 18.0),
                             )
