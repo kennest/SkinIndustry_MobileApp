@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:mobile_ecommerce/models/cart.dart';
 import 'package:mobile_ecommerce/models/category.dart';
 import 'package:mobile_ecommerce/models/product.dart';
 
@@ -27,3 +28,4 @@ class ProductLoaded extends ProductState {
   @override
   String toString() => 'ProductLoaded { posts: ${products.length} }';
 }
+

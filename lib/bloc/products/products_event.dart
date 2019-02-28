@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
+import 'package:mobile_ecommerce/models/product.dart';
 
 abstract class ProductEvent extends Equatable {
   ProductEvent([List props = const []]) : super(props);
@@ -12,3 +13,4 @@ class Fetch extends ProductEvent {
   @override
   String toString() => 'Fetch : $categoryId';
 }
+

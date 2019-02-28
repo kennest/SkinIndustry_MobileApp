@@ -1,5 +1,4 @@
 import 'package:mobile_ecommerce/models/product.dart';
-
 class Cart{
-  Map<Product,int> cartProducts;
+  Map<int,Product> cartProducts=new Map();
 }

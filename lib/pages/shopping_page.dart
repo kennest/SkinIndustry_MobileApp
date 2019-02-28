@@ -2,6 +2,9 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:mobile_ecommerce/bloc/cart/cart_bloc.dart';
+import 'package:mobile_ecommerce/bloc/cart/cart_event.dart';
+import 'package:mobile_ecommerce/bloc/cart/cart_state.dart';
 import 'package:mobile_ecommerce/bloc/products/product_state.dart';
 import 'package:mobile_ecommerce/bloc/products/products_bloc.dart';
 import 'package:mobile_ecommerce/bloc/products/products_event.dart';
@@ -20,7 +23,8 @@ class _ShoppingPageState extends State<ShoppingPage>
   TabController tabController;
   final ScrollController _scrollController = ScrollController();
   ProductsBloc productBloc = ProductsBloc();
-  int selectedtab=0;
+  CartBloc cartBloc = CartBloc();
+  int selectedtab = 0;
 
   @override
   void initState() {
@@ -125,7 +129,7 @@ class _ShoppingPageState extends State<ShoppingPage>
                     delegate: SliverChildBuilderDelegate(
                       (BuildContext context, int index) {
                         Product product = state.products[index];
-                        return cardItem(product);
+                        return cardItem(product, state);
                       },
                       childCount: state.products.length,
                     ),
@@ -153,8 +157,8 @@ class _ShoppingPageState extends State<ShoppingPage>
           child: Text('${c.name}', style: TextStyle(color: Colors.black)),
           onPressed: () {
             print('${tabController.index} /${c.id}');
-            selectedtab=(c.id-1);
-            tabController.animateTo(c.id-1);
+            selectedtab = (c.id - 1);
+            tabController.animateTo(c.id - 1);
             productBloc.dispatch(Fetch(categoryId: c.id));
           },
         ),
@@ -185,7 +189,7 @@ class _ShoppingPageState extends State<ShoppingPage>
     );
   }
 
-  Widget cardItem(Product product) {
+  Widget cardItem(Product product, ProductState state) {
     return Card(
       margin: EdgeInsets.all(8.0),
       color: Colors.white,
@@ -248,28 +252,42 @@ class _ShoppingPageState extends State<ShoppingPage>
               ),
             ],
           ),
-          Positioned(
-              top: 180.0,
-              left: 120.0,
-              child: Container(
-                width: 35.0,
-                height: 35.0,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: Colors.pink,
-                ),
-                child: IconButton(
-                  highlightColor: Colors.pink,
-                  splashColor: Colors.pink[100],
-                  color: Colors.pink,
-                  icon: Icon(
-                    Icons.add_shopping_cart,
-                    size: 20.0,
-                    color: Colors.white,
-                  ),
-                  onPressed: () {},
-                ),
-              ))
+          BlocBuilder(
+            bloc: cartBloc,
+            builder: (BuildContext context, CartState state) {
+              if (state is CartUninitialized) {
+                return Positioned(
+                    top: 180.0,
+                    left: 120.0,
+                    child: Container(
+                      width: 35.0,
+                      height: 35.0,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: Colors.pink,
+                      ),
+                      child: IconButton(
+                        highlightColor: Colors.pink,
+                        splashColor: Colors.pink[100],
+                        color: Colors.pink,
+                        icon: Icon(
+                          Icons.add_shopping_cart,
+                          size: 20.0,
+                          color: Colors.white,
+                        ),
+                        onPressed: () {
+                          cartBloc
+                              .dispatch(AddToCart(product: product, qte: 2));
+                        },
+                      ),
+                    ));
+              } else if (state is ProductAdded) {
+                if (state.cart.cartProducts.containsKey(product)) {
+                  return Text('${cartBloc.cart.cartProducts.length}');
+                }
+              }
+            },
+          ),
         ],
       ),
     );

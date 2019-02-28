@@ -3,6 +3,8 @@ import 'package:bloc/bloc.dart';
 import 'package:mobile_ecommerce/api/api.dart';
 import 'package:mobile_ecommerce/bloc/products/product_state.dart';
 import 'package:mobile_ecommerce/bloc/products/products_event.dart';
+import 'package:mobile_ecommerce/models/cart.dart';
+import 'package:mobile_ecommerce/models/product.dart';
 import 'package:rxdart/rxdart.dart';
 
 class ProductsBloc extends Bloc<ProductEvent, ProductState> {
@@ -28,6 +30,6 @@ class ProductsBloc extends Bloc<ProductEvent, ProductState> {
       } catch (_) {
         yield ProductError();
       }
-    }
+    } 
   }
 }
