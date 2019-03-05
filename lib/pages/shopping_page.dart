@@ -8,9 +8,11 @@ import 'package:mobile_ecommerce/bloc/cart/cart_state.dart';
 import 'package:mobile_ecommerce/bloc/products/product_state.dart';
 import 'package:mobile_ecommerce/bloc/products/products_bloc.dart';
 import 'package:mobile_ecommerce/bloc/products/products_event.dart';
+import 'package:mobile_ecommerce/models/cart.dart';
 import 'package:mobile_ecommerce/models/category.dart';
 import 'package:mobile_ecommerce/models/product.dart';
 import 'package:mobile_ecommerce/pages/pages.dart';
+import 'package:scoped_model/scoped_model.dart';
 
 class ShoppingPage extends StatefulWidget {
   ShoppingPage({Key key}) : super(key: key);
@@ -23,7 +25,8 @@ class _ShoppingPageState extends State<ShoppingPage>
   TabController tabController;
   final ScrollController _scrollController = ScrollController();
   ProductsBloc productBloc = ProductsBloc();
-  CartBloc cartBloc = CartBloc();
+  Map<int, Product> cart = Map();
+  CartBloc cartBloc = CartBloc(cart: Cart());
   int selectedtab = 0;
 
   @override
@@ -128,13 +131,16 @@ class _ShoppingPageState extends State<ShoppingPage>
                     ),
                     delegate: SliverChildBuilderDelegate(
                       (BuildContext context, int index) {
-                        Product product = state.products[index];
-                        return cardItem(product, state);
+                        return cardItem(context, state.products[index], state);
                       },
                       childCount: state.products.length,
                     ),
                   ),
                 ],
+              );
+            } else if (state is ProductError) {
+              return Center(
+                child: Text('Error Api'),
               );
             }
           }),
@@ -175,21 +181,58 @@ class _ShoppingPageState extends State<ShoppingPage>
       backgroundColor: backgroundColor,
       elevation: 0.0,
       actions: <Widget>[
-        IconButton(
-          color: Colors.pinkAccent,
-          icon: Icon(Icons.shopping_cart),
-          onPressed: () {},
+        ScopedModel<Cart>(
+          model: cartBloc.cart,
+          child: ScopedModelDescendant<Cart>(
+            rebuildOnChange: true,
+            builder: (context, child, model) {
+              return Stack(
+                children: <Widget>[
+                  IconButton(
+                    color: Colors.pinkAccent,
+                    icon: Icon(
+                      Icons.shopping_cart,
+                      size: 30.0,
+                    ),
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          CupertinoPageRoute(
+                              builder: (context) =>
+                                  CartPage(cartBloc: cartBloc)));
+                    },
+                  ),
+                  (model.cart.values.length >= 0)
+                      ? Positioned(
+                          left: 25.0,
+                          child: Container(
+                            width: 20.0,
+                            height: 20.0,
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(62.0),
+                                color: Colors.pink[500]),
+                            child: Center(
+                              child: Text('${model.cart.values.length}'),
+                            ),
+                          ),
+                        )
+                      : null,
+                ],
+              );
+            },
+          ),
         ),
         IconButton(
           color: Colors.pinkAccent,
-          icon: Icon(Icons.menu),
+          icon: Icon(Icons.menu, size: 30.0),
           onPressed: () {},
         )
       ],
     );
   }
 
-  Widget cardItem(Product product, ProductState state) {
+  Widget cardItem(BuildContext ctx, Product p, ProductState productstate) {
+    print('Cart Rebuild ${p.id}');
     return Card(
       margin: EdgeInsets.all(8.0),
       color: Colors.white,
@@ -204,16 +247,16 @@ class _ShoppingPageState extends State<ShoppingPage>
                   Column(
                     children: <Widget>[
                       Hero(
-                          tag: product.picture,
+                          tag: p.picture,
                           child: Column(
                             children: <Widget>[
                               CachedNetworkImage(
                                 height: 130.0,
                                 width: 250.0,
-                                imageUrl: product.picture,
-                                placeholder: (context, url) =>
+                                imageUrl: p.picture,
+                                placeholder: (ctx, url) =>
                                     CircularProgressIndicator(),
-                                errorWidget: (context, url, error) =>
+                                errorWidget: (ctx, url, error) =>
                                     Icon(Icons.error),
                               ),
                               Material(
@@ -223,19 +266,18 @@ class _ShoppingPageState extends State<ShoppingPage>
                                     Navigator.push(
                                         context,
                                         CupertinoPageRoute(
-                                            builder: (context) =>
-                                                ProductDetailPage(
-                                                  product: product,
+                                            builder: (ctx) => ProductDetailPage(
+                                                  product: p,
                                                 )));
                                   },
-                                  title: Text(product.title),
+                                  title: Text(p.title),
                                   subtitle: Column(
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: <Widget>[
-                                      Text(product.description),
+                                      Text(p.description),
                                       Text(
-                                        '${product.price}',
+                                        '${p.price}',
                                         style: TextStyle(
                                             fontWeight: FontWeight.w700,
                                             fontSize: 15.0),
@@ -254,8 +296,8 @@ class _ShoppingPageState extends State<ShoppingPage>
           ),
           BlocBuilder(
             bloc: cartBloc,
-            builder: (BuildContext context, CartState state) {
-              if (state is CartUninitialized) {
+            builder: (ctx, CartState cardstate) {
+              if (cardstate is CartUninitialized) {
                 return Positioned(
                     top: 180.0,
                     left: 120.0,
@@ -276,20 +318,63 @@ class _ShoppingPageState extends State<ShoppingPage>
                           color: Colors.white,
                         ),
                         onPressed: () {
-                          cartBloc
-                              .dispatch(AddToCart(product: product, qte: 2));
+                          cartBloc.dispatch(new AddToCart(product: p, qte: 2));
                         },
                       ),
                     ));
-              } else if (state is ProductAdded) {
-                if (state.cart.cartProducts.containsKey(product)) {
-                  return Text('${cartBloc.cart.cartProducts.length}');
-                }
+              } else if (cardstate is ProductAdded) {
+                return Positioned(
+                    top: 180.0,
+                    left: 120.0,
+                    child: Container(
+                      width: 35.0,
+                      height: 35.0,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: Colors.pink,
+                      ),
+                      child: ScopedModel<Cart>(
+                        model: cartBloc.cart,
+                        child: ScopedModelDescendant<Cart>(
+                          rebuildOnChange: true,
+                          builder: (context, child, model) {
+                            if (model.box.containsValue(p)) {
+                              print('${p.id} contained in');
+                            }
+                            return IconButton(
+                                    highlightColor: Colors.pink,
+                                    splashColor: Colors.pink[100],
+                                    color:
+                                        (model.box.containsValue(p))
+                                            ? Colors.pink
+                                            : Colors.grey,
+                                    icon: Icon(
+                                      Icons.add_shopping_cart,
+                                      size: 20.0,
+                                      color: Colors.white,
+                                    ),
+                                    onPressed: (model.box.containsValue(p))?() {
+                                      print('cartBtn pressed');
+                                      cartBloc.dispatch(
+                                          AddToCart(product: p, qte: 2));
+                                    }:(){},
+                                  );
+                          },
+                        ),
+                      ),
+                    ));
               }
             },
           ),
         ],
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    productBloc.dispose();
+    cartBloc.dispose();
+    super.dispose();
   }
 }

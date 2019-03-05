@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import 'package:mobile_ecommerce/models/cart.dart';
+import 'package:mobile_ecommerce/models/product.dart';
 
 abstract class CartState extends Equatable {
   CartState([List props = const []]) : super(props);
@@ -11,18 +11,23 @@ class CartUninitialized extends CartState {
 }
 
 class ProductAdded extends CartState{
-   Cart cart;
+    Product product;
    
-  ProductAdded({this.cart});
+  ProductAdded({this.product}):super([product]);
   @override
-  String toString() => 'Product added { cart: ${cart.cartProducts.length} }';
+  String toString() => 'Product added { cart: ${product.id} }';
 }
 
 class ProductRemoved extends CartState{
-   Cart cart;
+    Product product;
    
-  ProductRemoved({this.cart});
+  ProductRemoved({this.product}):super([product]);
   @override
-  String toString() => 'Product added { cart: ${cart.cartProducts.length} }';
+  String toString() => 'Product removed { cart: ${product.id} }';
+}
+
+class CartEmpty extends CartState {
+  @override
+  String toString() => 'ProductUninitialized';
 }
 

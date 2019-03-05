@@ -20,7 +20,11 @@ class _CartPageState extends State<CartPage> {
               builder: (BuildContext context, CartState state) {
                 if (state is ProductAdded) {
                   return Center(
-                    child: Text('${state.cart.cartProducts.length}'),
+                    child: Text('${widget.cartBloc.cart.values.length}'),
+                  );
+                } else if (state is CartUninitialized) {
+                  return Container(
+                    child: Text('Cart'),
                   );
                 }
               })

@@ -1,16 +1,18 @@
 import 'dart:async';
+
 import 'package:bloc/bloc.dart';
+import 'package:meta/meta.dart';
 import 'package:mobile_ecommerce/bloc/cart/cart_event.dart';
 import 'package:mobile_ecommerce/bloc/cart/cart_state.dart';
 import 'package:mobile_ecommerce/models/cart.dart';
-import 'package:mobile_ecommerce/models/product.dart';
 import 'package:rxdart/rxdart.dart';
 
 class CartBloc extends Bloc<CartEvent, CartState> {
-  final Map<int, Product> products = Map();
-  final cart = Cart();
+  Cart cart;
 
-@override
+  CartBloc({@required cart});
+
+  @override
   Stream<CartEvent> transform(Stream<CartEvent> events) {
     return (events as Observable<CartEvent>)
         .debounce(Duration(milliseconds: 200));
@@ -23,13 +25,15 @@ class CartBloc extends Bloc<CartEvent, CartState> {
   Stream<CartState> mapEventToState(
       CartState currentState, CartEvent event) async* {
     if (event is AddToCart) {
-      products[event.qte] = event.product;
-      cart.cartProducts = products;
-      yield ProductAdded(cart: cart);
+      yield CartUninitialized();
+      print('cartBloc: AddToCart');
+      cart.addToCart(event.product, cart.box.length + 1);
+      print('cart Size: ${cart.cart.values.length}');
+      yield ProductAdded(product: event.product);
     } else if (event is RemoveFromCart) {
-      products.remove(event.product);
-      cart.cartProducts = products;
-      yield ProductRemoved(cart: cart);
+      print('cartBloc: RemoveFromCart');
+      cart.removeFromCart(event.product, 1);
+      yield ProductRemoved(product: event.product);
     }
   }
 }

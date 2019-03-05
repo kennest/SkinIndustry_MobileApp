@@ -1,16 +1,17 @@
 import 'dart:async';
 import 'dart:convert';
+
 import 'package:http/http.dart' as http;
 import 'package:mobile_ecommerce/models/category.dart';
 import 'package:mobile_ecommerce/models/product.dart';
 
 class Api {
   var url = "https://my-json-server.typicode.com/kennest/json-db/";
- 
-  List<Category> categories = [];
 
-  Future<List<Product>> fetchProducts({int categoryId=1}) async {
-     List<Product> products = [];
+  List<Category> categories = [];
+  List<Product> products = [];
+
+  Future<List<Product>> fetchProducts({int categoryId = 1}) async {
     final response = await http.get('${url}products');
     if (response.statusCode == 200) {
       print(response.body);

@@ -20,7 +20,7 @@ class _SplashPageState extends State<SplashPage> {
               decoration: BoxDecoration(
                   image: DecorationImage(
                       image: NetworkImage(
-                        'https://cdn.dribbble.com/users/625210/screenshots/4985156/bn_ani_1_2.gif',
+                        'https://www.pcaskin.com/skin/frontend/mw2consulting/consumers/images/consumers/topmenu/sensitive.jpg',
                       ),
                       fit: BoxFit.cover)),
               child: Stack(
