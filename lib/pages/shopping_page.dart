@@ -202,7 +202,7 @@ class _ShoppingPageState extends State<ShoppingPage>
                                   CartPage(cartBloc: cartBloc)));
                     },
                   ),
-                  (model.cart.values.length >= 0)
+                  (model.Hcart.values.length >= 0)
                       ? Positioned(
                           left: 25.0,
                           child: Container(
@@ -212,7 +212,7 @@ class _ShoppingPageState extends State<ShoppingPage>
                                 borderRadius: BorderRadius.circular(62.0),
                                 color: Colors.pink[500]),
                             child: Center(
-                              child: Text('${model.cart.values.length}'),
+                              child: Text('${model.Hcart.values.length}'),
                             ),
                           ),
                         )
@@ -319,7 +319,7 @@ class _ShoppingPageState extends State<ShoppingPage>
                         ),
                         onPressed: () {
                           cartBloc.dispatch(new AddToCart(
-                              product: p, qte: cartBloc.cart.box.length + 1));
+                              product: p, qte: 1));
                         },
                       ),
                     ));
@@ -339,29 +339,29 @@ class _ShoppingPageState extends State<ShoppingPage>
                         child: ScopedModelDescendant<Cart>(
                           rebuildOnChange: true,
                           builder: (context, child, model) {
-                            if (model.box.containsValue(p)) {
+                            if (model.Hbox.containsValue(p.id)) {
                               print('${p.id} contained in Cart');
-                              model.box.forEach((k, v) {
-                                print('$k / ${v.title} ${v.id}');
+                              model.Hbox.forEach((k, v) {
+                                print('$k ');
                               });
                             }
                             return IconButton(
                               highlightColor: Colors.pink,
                               splashColor: Colors.pink[100],
-                              color: (model.box.containsValue(p))
-                                  ? Colors.pink
-                                  : Colors.grey,
+                              color: (model.Hbox.containsValue(p.id))
+                                  ? Colors.grey
+                                  : Colors.pink,
                               icon: Icon(
                                 Icons.add_shopping_cart,
                                 size: 20.0,
                                 color: Colors.white,
                               ),
-                              onPressed: (model.box.containsValue(p))
-                                  ?() {
+                              onPressed: (model.Hbox.containsValue(p.id))
+                                  ?() {}:() {
                                       print('cartBtn pressed');
                                       cartBloc.dispatch(
-                                          AddToCart(product: p, qte: 2));
-                                    }:() {},
+                                          AddToCart(product: p, qte: 1));
+                                    },
                             );
                           },
                         ),

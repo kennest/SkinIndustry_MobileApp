@@ -21,8 +21,8 @@ class UserRepository {
 
   Future<void> saveCartData(Cart cart) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setString("cart", cart.box.toString());
-    print('cart saved: ${cart.box.toString()}');
+    //prefs.setString("cart", cart.box.toString());
+    //print('cart saved: ${cart.box.toString()}');
   }
 
   Future<void> persistToken(String token) async {

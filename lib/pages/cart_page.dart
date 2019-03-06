@@ -32,7 +32,7 @@ class _CartPageState extends State<CartPage> {
                 children: <Widget>[
                   Expanded(
                     child: ListView.builder(
-                      itemCount: state.cart.box.values.toList().length,
+                      itemCount: state.cart.Hbox.values.single.values.toList().length,
                       itemBuilder: (BuildContext ctx, int index) {
                         return Card(
                           elevation: 8.0,
@@ -42,7 +42,7 @@ class _CartPageState extends State<CartPage> {
                             decoration: BoxDecoration(
                                 color: Colors.pink[200]),
                             child:
-                                cartItem(state.cart.box.values.toList()[index]),
+                                cartItem(state.cart.Hbox.values.single.values.toList()[index]),
                           ),
                         );
                       },
@@ -89,7 +89,7 @@ class _CartPageState extends State<CartPage> {
                                   CartPage(cartBloc: widget.cartBloc)));
                     },
                   ),
-                  (model.cart.values.length >= 0)
+                  (model.Hcart.values.length >= 0)
                       ? Positioned(
                           left: 25.0,
                           child: Container(
@@ -99,7 +99,7 @@ class _CartPageState extends State<CartPage> {
                                 borderRadius: BorderRadius.circular(62.0),
                                 color: Colors.pink[500]),
                             child: Center(
-                              child: Text('${model.cart.values.length}'),
+                              child: Text('${model.Hcart.values.length}'),
                             ),
                           ),
                         )

@@ -29,9 +29,9 @@ class CartBloc extends Bloc<CartEvent, CartState> {
     if (event is AddToCart) {
       yield CartUninitialized();
       print('cartBloc: AddToCart');
-      cart.addToCart(event.product, cart.box.length + 1);
+      cart.addToCart(event.product, event.qte);
       await userRepository.saveCartData(cart);
-      print('cart Size: ${cart.cart.values.length}');
+      print('cart Size: ${cart.Hcart.values.length}');
       yield ProductAdded(cart: cart);
     } else if (event is RemoveFromCart) {
       print('cartBloc: RemoveFromCart');

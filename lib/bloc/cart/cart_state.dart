@@ -16,7 +16,7 @@ class ProductAdded extends CartState{
    
   ProductAdded({this.cart}):super([cart]);
   @override
-  String toString() => 'Product added { cart: ${cart.box.length}';
+  String toString() => 'Product added { cart: ${cart.Hbox.length}';
 }
 
 class ProductRemoved extends CartState{
@@ -24,7 +24,7 @@ class ProductRemoved extends CartState{
    
   ProductRemoved({this.cart}):super([cart]);
   @override
-  String toString() => 'Product removed { cart: ${cart.box.length} }';
+  String toString() => 'Product removed { cart: ${cart.Hbox.length} }';
 }
 
 class CartEmpty extends CartState {
