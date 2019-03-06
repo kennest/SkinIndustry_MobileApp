@@ -22,7 +22,7 @@ class ProductLoaded extends ProductState {
   ProductLoaded({
     this.categories,
     this.products,
-  }) : super([products]);
+  }) : super([products,categories]);
 
   @override
   String toString() => 'ProductLoaded { posts: ${products.length} }';

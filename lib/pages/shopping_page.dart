@@ -318,7 +318,8 @@ class _ShoppingPageState extends State<ShoppingPage>
                           color: Colors.white,
                         ),
                         onPressed: () {
-                          cartBloc.dispatch(new AddToCart(product: p, qte: 2));
+                          cartBloc.dispatch(new AddToCart(
+                              product: p, qte: cartBloc.cart.box.length + 1));
                         },
                       ),
                     ));
@@ -339,26 +340,29 @@ class _ShoppingPageState extends State<ShoppingPage>
                           rebuildOnChange: true,
                           builder: (context, child, model) {
                             if (model.box.containsValue(p)) {
-                              print('${p.id} contained in');
+                              print('${p.id} contained in Cart');
+                              model.box.forEach((k, v) {
+                                print('$k / ${v.title} ${v.id}');
+                              });
                             }
                             return IconButton(
-                                    highlightColor: Colors.pink,
-                                    splashColor: Colors.pink[100],
-                                    color:
-                                        (model.box.containsValue(p))
-                                            ? Colors.pink
-                                            : Colors.grey,
-                                    icon: Icon(
-                                      Icons.add_shopping_cart,
-                                      size: 20.0,
-                                      color: Colors.white,
-                                    ),
-                                    onPressed: (model.box.containsValue(p))?() {
+                              highlightColor: Colors.pink,
+                              splashColor: Colors.pink[100],
+                              color: (model.box.containsValue(p))
+                                  ? Colors.pink
+                                  : Colors.grey,
+                              icon: Icon(
+                                Icons.add_shopping_cart,
+                                size: 20.0,
+                                color: Colors.white,
+                              ),
+                              onPressed: (model.box.containsValue(p))
+                                  ?() {
                                       print('cartBtn pressed');
                                       cartBloc.dispatch(
                                           AddToCart(product: p, qte: 2));
-                                    }:(){},
-                                  );
+                                    }:() {},
+                            );
                           },
                         ),
                       ),

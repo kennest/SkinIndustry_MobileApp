@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:mobile_ecommerce/models/cart.dart';
 import 'package:mobile_ecommerce/models/product.dart';
 
 abstract class CartState extends Equatable {
@@ -11,19 +12,19 @@ class CartUninitialized extends CartState {
 }
 
 class ProductAdded extends CartState{
-    Product product;
+    Cart cart;
    
-  ProductAdded({this.product}):super([product]);
+  ProductAdded({this.cart}):super([cart]);
   @override
-  String toString() => 'Product added { cart: ${product.id} }';
+  String toString() => 'Product added { cart: ${cart.box.length}';
 }
 
 class ProductRemoved extends CartState{
-    Product product;
+    Cart cart;
    
-  ProductRemoved({this.product}):super([product]);
+  ProductRemoved({this.cart}):super([cart]);
   @override
-  String toString() => 'Product removed { cart: ${product.id} }';
+  String toString() => 'Product removed { cart: ${cart.box.length} }';
 }
 
 class CartEmpty extends CartState {
