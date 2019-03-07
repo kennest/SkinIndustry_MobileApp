@@ -18,7 +18,7 @@ dependencies:
   http:
   flutter_bloc: ^0.7.0
   bloc: ^0.9.3
-  spinner_input: ^0.1.1
+  numberpicker: ^1.0.0
   cached_network_image: ^0.6.1
   dio: ^2.0.15
   scoped_model: ^1.0.1

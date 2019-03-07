@@ -34,8 +34,10 @@ class CartBloc extends Bloc<CartEvent, CartState> {
       print('cart Size: ${cart.Hcart.values.length}');
       yield ProductAdded(cart: cart);
     } else if (event is RemoveFromCart) {
+      yield CartUninitialized();
       print('cartBloc: RemoveFromCart');
       cart.removeFromCart(event.product, 1);
+       print('cart Size: ${cart.Hcart.values.length}');
       yield ProductRemoved(cart: cart);
     }
   }

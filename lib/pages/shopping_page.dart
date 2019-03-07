@@ -323,7 +323,7 @@ class _ShoppingPageState extends State<ShoppingPage>
                         },
                       ),
                     ));
-              } else if (cardstate is ProductAdded) {
+              } else if (cardstate is ProductAdded || cardstate is ProductRemoved) {
                 return Positioned(
                     top: 180.0,
                     left: 120.0,
@@ -345,7 +345,7 @@ class _ShoppingPageState extends State<ShoppingPage>
                                 print('$k ');
                               });
                             }
-                            return IconButton(
+                            return (model.Hbox.containsValue(p.id))?null:IconButton(
                               highlightColor: Colors.pink,
                               splashColor: Colors.pink[100],
                               color: (model.Hbox.containsValue(p.id))

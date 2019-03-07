@@ -28,20 +28,25 @@ class _SplashPageState extends State<SplashPage> {
                   Padding(
                     padding: EdgeInsets.only(top: 80.0),
                     child: Align(
-                      alignment: Alignment.topLeft,
-                      child: Column(
-                        children: <Widget>[
-                          ListTile(
-                            title: Text(
-                              "Perfect Skin Industry",
-                              style: TextStyle(fontSize: 30.0),
-                            ),
-                            subtitle: Text('Service de soins de peaux',
-                                style: TextStyle(fontSize: 15.0)),
-                          )
-                        ],
-                      ),
-                    ),
+                        alignment: Alignment.topLeft,
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: Colors.white.withOpacity(0.7),
+                          ),
+                          height: 80.0,
+                          child: Column(
+                            children: <Widget>[
+                              ListTile(
+                                title: Text(
+                                  "Perfect Skin Industry",
+                                  style: TextStyle(fontSize: 30.0),
+                                ),
+                                subtitle: Text('Service de soins de peaux',
+                                    style: TextStyle(fontSize: 15.0)),
+                              )
+                            ],
+                          ),
+                        )),
                   ),
                   Align(
                       alignment: Alignment.bottomCenter,

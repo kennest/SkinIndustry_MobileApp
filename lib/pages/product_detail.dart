@@ -1,8 +1,8 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile_ecommerce/models/product.dart';
+import 'package:numberpicker/numberpicker.dart';
 import 'pages.dart';
-import 'package:spinner_input/spinner_input.dart';
 
 class ProductDetailPage extends StatefulWidget {
   final Product product;
@@ -73,21 +73,11 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                   children: <Widget>[
                     Container(
                 margin: EdgeInsets.all(20),
-                child: SpinnerInput(
-                  minValue: 0,
-                  maxValue: 200,
-                  step: 1,
-                  plusButton: SpinnerButtonStyle(elevation: 0, color: Colors.pink[100], borderRadius: BorderRadius.circular(32.0)),
-                  minusButton: SpinnerButtonStyle(elevation: 0, color: Colors.pink.withOpacity(0.5), borderRadius: BorderRadius.circular(32.0)),
-                  middleNumberWidth: 70,
-                  middleNumberStyle: TextStyle(fontSize: 21),
-                  spinnerValue: spinner,
-                  onChange: (newValue) {
-                    setState(() {
-                      spinner = newValue;
-                    });
-                  },
-                ),
+                child: NumberPicker.integer(
+                initialValue: 50,
+                minValue: 0,
+                maxValue: 100,
+                onChanged: _handleChange),
               ),
                     Container(
                       width: 350.0,
@@ -112,6 +102,10 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
         ],
       ),
     );
+  }
+
+  _handleChange(num){
+
   }
 
   Widget getAppBar() {

@@ -2,24 +2,25 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mobile_ecommerce/bloc/cart/cart_bloc.dart';
+import 'package:mobile_ecommerce/bloc/cart/cart_event.dart';
 import 'package:mobile_ecommerce/bloc/cart/cart_state.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:mobile_ecommerce/models/cart.dart';
 import 'package:mobile_ecommerce/models/product.dart';
 import 'package:mobile_ecommerce/pages/ui/colors.dart';
 import 'package:scoped_model/scoped_model.dart';
-import 'package:spinner_input/spinner_input.dart';
+import 'package:numberpicker/numberpicker.dart';
 
 class CartPage extends StatefulWidget {
-  CartBloc cartBloc;
-  double spinner = 0;
+  final CartBloc cartBloc;
   CartPage({Key key, this.cartBloc}) : super(key: key);
 
   _CartPageState createState() => _CartPageState();
 }
 
 class _CartPageState extends State<CartPage> {
-  final ScrollController _scrollController = ScrollController();
+  //final ScrollController _scrollController = ScrollController();
+  double spinner = 0;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -32,17 +33,17 @@ class _CartPageState extends State<CartPage> {
                 children: <Widget>[
                   Expanded(
                     child: ListView.builder(
-                      itemCount: state.cart.Hbox.values.single.values.toList().length,
+                      itemCount: state.cart.Hbox.values.toList().length,
                       itemBuilder: (BuildContext ctx, int index) {
+                        Map<int, Product> map =
+                            state.cart.Hbox.values.elementAt(index);
                         return Card(
                           elevation: 8.0,
                           margin: new EdgeInsets.symmetric(
                               horizontal: 10.0, vertical: 6.0),
                           child: Container(
-                            decoration: BoxDecoration(
-                                color: Colors.pink[200]),
-                            child:
-                                cartItem(state.cart.Hbox.values.single.values.toList()[index]),
+                            decoration: BoxDecoration(color: Colors.pink[200]),
+                            child: cartItem(map.values.first, widget.cartBloc),
                           ),
                         );
                       },
@@ -54,14 +55,45 @@ class _CartPageState extends State<CartPage> {
               return Container(
                 child: Text('Cart'),
               );
+            } else if (state is ProductRemoved) {
+              if (state.cart.Hbox.values.length > 0) {
+                return Column(
+                  children: <Widget>[
+                    Expanded(
+                      child: ListView.builder(
+                        itemCount: state.cart.Hbox.values.toList().length,
+                        itemBuilder: (BuildContext ctx, int index) {
+                          Map<int, Product> map =
+                              state.cart.Hbox.values.elementAt(index);
+                          return Card(
+                            elevation: 8.0,
+                            margin: new EdgeInsets.symmetric(
+                                horizontal: 10.0, vertical: 6.0),
+                            child: Container(
+                              decoration:
+                                  BoxDecoration(color: Colors.pink[200]),
+                              child:
+                                  cartItem(map.values.first, widget.cartBloc),
+                            ),
+                          );
+                        },
+                      ),
+                    )
+                  ],
+                );
+              } else {
+                return Center(
+                  child: Icon(Icons.info),
+                );
+              }
             }
           }),
     );
   }
 
-   Widget getAppBar() {
+  Widget getAppBar() {
     return AppBar(
-      title: Text('Cart',style:TextStyle(color: Colors.pink)),
+      title: Text('Cart', style: TextStyle(color: Colors.pink)),
       iconTheme: IconThemeData(
         color: Colors.pinkAccent, //change your color here
       ),
@@ -118,18 +150,16 @@ class _CartPageState extends State<CartPage> {
     );
   }
 
-  Widget cartItem(Product n) {
+  Widget cartItem(Product n, CartBloc cartBloc) {
     var widget = ListTile(
         contentPadding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
-        leading:  CachedNetworkImage(
-                                height: 50.0,
-                                width: 50.0,
-                                imageUrl: n.picture,
-                                placeholder: (ctx, url) =>
-                                    CircularProgressIndicator(),
-                                errorWidget: (ctx, url, error) =>
-                                    Icon(Icons.error),
-                              ),
+        leading: CachedNetworkImage(
+          height: 50.0,
+          width: 50.0,
+          imageUrl: n.picture,
+          placeholder: (ctx, url) => CircularProgressIndicator(),
+          errorWidget: (ctx, url, error) => Icon(Icons.error),
+        ),
         title: Text(
           "${n.title}",
           style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
@@ -139,11 +169,25 @@ class _CartPageState extends State<CartPage> {
         subtitle: Row(
           children: <Widget>[
             Icon(Icons.monetization_on, color: Colors.yellowAccent),
-            Text(" ${n.price}", style: TextStyle(color: Colors.white))
+            Text(" ${n.price}", style: TextStyle(color: Colors.white)),
           ],
         ),
-        trailing:
-            Icon(Icons.keyboard_arrow_right, color: Colors.white, size: 30.0));
+        trailing: BlocBuilder(
+          bloc: cartBloc,
+          builder: (BuildContext ctx, CartState state) {
+            if (state is CartUninitialized || state is ProductAdded || state is ProductRemoved) {
+              return IconButton(
+                splashColor: Colors.pinkAccent[600],
+                color: Colors.pinkAccent[700],
+                icon: Icon(Icons.close, color: Colors.white, size: 30.0),
+                onPressed:() {
+                  print('removed from cart');
+                  cartBloc.dispatch(RemoveFromCart(product: n));
+                },
+              );
+            }
+          },
+        ));
 
     return widget;
   }
