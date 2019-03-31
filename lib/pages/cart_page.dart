@@ -1,15 +1,14 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mobile_ecommerce/bloc/cart/cart_bloc.dart';
 import 'package:mobile_ecommerce/bloc/cart/cart_event.dart';
 import 'package:mobile_ecommerce/bloc/cart/cart_state.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:mobile_ecommerce/models/cart.dart';
 import 'package:mobile_ecommerce/models/product.dart';
 import 'package:mobile_ecommerce/pages/ui/colors.dart';
 import 'package:scoped_model/scoped_model.dart';
-import 'package:numberpicker/numberpicker.dart';
 
 class CartPage extends StatefulWidget {
   final CartBloc cartBloc;
@@ -88,6 +87,21 @@ class _CartPageState extends State<CartPage> {
               }
             }
           }),
+      bottomNavigationBar: Row(
+        children: <Widget>[
+          BlocBuilder(
+              bloc: widget.cartBloc,
+              builder: (BuildContext context, CartState state) {
+                if (state is ProductAdded) {
+                  return Row(
+                    children: <Widget>[
+                      Text("${state.cart.Hbox.values.length}")
+                    ],
+                  );
+                }
+              })
+        ],
+      ),
     );
   }
 
@@ -175,12 +189,14 @@ class _CartPageState extends State<CartPage> {
         trailing: BlocBuilder(
           bloc: cartBloc,
           builder: (BuildContext ctx, CartState state) {
-            if (state is CartUninitialized || state is ProductAdded || state is ProductRemoved) {
+            if (state is CartUninitialized ||
+                state is ProductAdded ||
+                state is ProductRemoved) {
               return IconButton(
                 splashColor: Colors.pinkAccent[600],
                 color: Colors.pinkAccent[700],
                 icon: Icon(Icons.close, color: Colors.white, size: 30.0),
-                onPressed:() {
+                onPressed: () {
                   print('removed from cart');
                   cartBloc.dispatch(RemoveFromCart(product: n));
                 },
