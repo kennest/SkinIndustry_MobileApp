@@ -2,6 +2,7 @@ import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'pages/pages.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class SimpleBlocDelegate extends BlocDelegate {
   @override
@@ -17,8 +18,14 @@ class SimpleBlocDelegate extends BlocDelegate {
 }
 
 void main() {
+getPermissions();
   BlocSupervisor().delegate = SimpleBlocDelegate();
   runApp(MyApp());
+}
+
+void getPermissions()async{
+  Map<PermissionGroup, PermissionStatus> permissions = await PermissionHandler().requestPermissions([PermissionGroup.storage]);
+  PermissionStatus permission = await PermissionHandler().checkPermissionStatus(PermissionGroup.storage);
 }
 
 class MyApp extends StatelessWidget {

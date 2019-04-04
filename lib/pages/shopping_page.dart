@@ -140,7 +140,25 @@ class _ShoppingPageState extends State<ShoppingPage>
               );
             } else if (state is ProductError) {
               return Center(
-                child: Text('Error Api'),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    IconButton(
+                      highlightColor: Colors.pink[100],
+                      splashColor: Colors.pink[200],
+                      icon: Icon(
+                        Icons.refresh,
+                        color: Colors.pink[400],
+                      ),
+                      onPressed: () {
+                        productBloc.dispatch(Fetch(categoryId: 1));
+                      },
+                    ),
+                    Text("Reesayer",style: TextStyle(color: Colors.pink[400]),)
+                  ],
+                )
+
               );
             }
           }),
@@ -318,12 +336,12 @@ class _ShoppingPageState extends State<ShoppingPage>
                           color: Colors.white,
                         ),
                         onPressed: () {
-                          cartBloc.dispatch(new AddToCart(
-                              product: p, qte: 1));
+                          cartBloc.dispatch(new AddToCart(product: p, qte: 1));
                         },
                       ),
                     ));
-              } else if (cardstate is ProductAdded || cardstate is ProductRemoved) {
+              } else if (cardstate is ProductAdded ||
+                  cardstate is ProductRemoved) {
                 return Positioned(
                     top: 180.0,
                     left: 120.0,
@@ -345,24 +363,27 @@ class _ShoppingPageState extends State<ShoppingPage>
                                 print('$k ');
                               });
                             }
-                            return (model.Hbox.containsValue(p.id))?null:IconButton(
-                              highlightColor: Colors.pink,
-                              splashColor: Colors.pink[100],
-                              color: (model.Hbox.containsValue(p.id))
-                                  ? Colors.grey
-                                  : Colors.pink,
-                              icon: Icon(
-                                Icons.add_shopping_cart,
-                                size: 20.0,
-                                color: Colors.white,
-                              ),
-                              onPressed: (model.Hbox.containsValue(p.id))
-                                  ?() {}:() {
-                                      print('cartBtn pressed');
-                                      cartBloc.dispatch(
-                                          AddToCart(product: p, qte: 1));
-                                    },
-                            );
+                            return (model.Hbox.containsValue(p.id))
+                                ? null
+                                : IconButton(
+                                    highlightColor: Colors.pink,
+                                    splashColor: Colors.pink[100],
+                                    color: (model.Hbox.containsValue(p.id))
+                                        ? Colors.grey
+                                        : Colors.pink,
+                                    icon: Icon(
+                                      Icons.add_shopping_cart,
+                                      size: 20.0,
+                                      color: Colors.white,
+                                    ),
+                                    onPressed: (model.Hbox.containsValue(p.id))
+                                        ? () {}
+                                        : () {
+                                            print('cartBtn pressed');
+                                            cartBloc.dispatch(
+                                                AddToCart(product: p, qte: 1));
+                                          },
+                                  );
                           },
                         ),
                       ),

@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'pages.dart';
 
+
 class SplashPage extends StatefulWidget {
   SplashPage({Key key}) : super(key: key);
 
@@ -59,7 +60,7 @@ class _SplashPageState extends State<SplashPage> {
                             Navigator.push(
                                 context,
                                 CupertinoPageRoute(
-                                    builder: (context) => LoginPage()));
+                                    builder: (context) => UserTypePage()));
                           },
                           child: Text(
                             'Start shopping',

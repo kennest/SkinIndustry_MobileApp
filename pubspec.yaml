@@ -25,7 +25,7 @@ dependencies:
   shared_preferences: ^0.5.1+1
   url_launcher: ^5.0.1
   path_provider: ^0.5.0+1
-  connectivity: ^0.4.2
+  #connectivity: ^0.4.2
   rxdart: ^0.18.1
   equatable: ^0.2.0
   flutter_secure_storage: ^3.2.0
@@ -33,6 +33,10 @@ dependencies:
   redux: ^3.0.0
   flutter_staggered_grid_view: "^0.2.7"
   dartfix: ^0.1.4
+  flutter_form_builder: ^2.0.3
+  flutter_circular_chart: ^0.1.0
+  permission_handler: '^2.2.0'
+  
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
@@ -41,7 +45,6 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  jaguar_orm_gen:
   build_runner: ^1.0.0
   build_test: ^0.10.3
 

@@ -4,7 +4,8 @@ import 'package:flutter/material.dart';
 import 'pages.dart';
 
 class LoginPage extends StatefulWidget {
-  LoginPage({Key key}) : super(key: key);
+  final String type;
+  LoginPage({Key key, this.type}) : super(key: key);
 
   _LoginPageState createState() => _LoginPageState();
 }
@@ -88,10 +89,17 @@ class _LoginPageState extends State<LoginPage> {
                   child: RaisedButton(
                     color: Colors.pink,
                     onPressed: () {
-                      Navigator.push(
-                          context,
-                          CupertinoPageRoute(
-                              builder: (context) => ShoppingPage()));
+                      if (widget.type == "client") {
+                        Navigator.push(
+                            context,
+                            CupertinoPageRoute(
+                                builder: (context) => ShoppingPage()));
+                      } else {
+                        Navigator.push(
+                            context,
+                            CupertinoPageRoute(
+                                builder: (context) => DashBoardPage()));
+                      }
                     },
                     child: Text(
                       'Log in',
@@ -107,9 +115,9 @@ class _LoginPageState extends State<LoginPage> {
             fit: BoxFit.cover,
             imageUrl:
                 'https://3.bp.blogspot.com/-i3OIbIhSBcU/WevH6M1yPXI/AAAAAAAACDc/2_EtN0lcuAU0ubDtJ3khC0pMjAMysc2jQCEwYBhgL/s1600/IMG_9935.JPG',
-            placeholder: (context, url) =>Center(
-              child: CircularProgressIndicator(),
-            ) ,
+            placeholder: (context, url) => Center(
+                  child: CircularProgressIndicator(),
+                ),
             errorWidget: (context, url, error) => Icon(Icons.error),
           ),
         ],
