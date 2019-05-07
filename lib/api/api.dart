@@ -3,18 +3,21 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:http/http.dart' as http;
+import 'package:mobile_ecommerce/database/db_provider.dart';
 import 'package:mobile_ecommerce/models/category.dart';
 import 'package:mobile_ecommerce/models/product.dart';
 import 'package:path_provider/path_provider.dart';
-
+import 'package:dio/dio.dart';
 
 class Api {
   var url = "https://my-json-server.typicode.com/kennest/json-db/";
 
   List<Category> categories = [];
   List<Product> products = [];
+  var connectivity;
 
   Future<List<Product>> fetchProducts({int categoryId = 1}) async {
+
     downloadFile(url: '${url}products');
     final response = await http.get('${url}products');
     if (response.statusCode == 200) {
@@ -26,12 +29,16 @@ class Api {
         print(n);
         print("**************");
         Product p = Product.fromJson(n);
+        //DBProvider().insertProduct(p);
         products.add(p);
       });
 
       products = products.where((p) => (p.categoryId == categoryId)).toList();
+
+      DBProvider().insertmanyProducts(products);
+
       print("******Products filtered********");
-      print(products.length);
+      print("Products Lenght -> ${products.length}");
       print("******Products filtered********");
     }
     return products;
@@ -39,17 +46,20 @@ class Api {
 
   void downloadFile({String url}) async {
 
-Uri uir=Uri.parse(url);
+    Uri uri=Uri.parse(url);
     print("URL:" + url);
+
     HttpClient client = new HttpClient();
     var _downloadData = StringBuffer();
     var file ;
     //Define the file path
-    getExternalStorageDirectory().then((dir){
+    getApplicationDocumentsDirectory().then((dir){
+      print("PATH -> ${dir.path}");
       file= new File(dir.path+'/http_downloaded.json');
+      Dio().downloadUri(uri, dir.path+'/http_downloaded.json');
     });
 
-    client.getUrl(Uri.parse(url)).then((request) {
+    client.getUrl(uri).then((request) {
       return request.close();
     }).then((response) {
       response.transform(utf8.decoder).listen((data) {

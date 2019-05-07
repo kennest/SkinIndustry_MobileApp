@@ -1,6 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:mobile_ecommerce/database/db_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 import 'pages/pages.dart';

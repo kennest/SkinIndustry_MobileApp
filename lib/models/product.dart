@@ -9,7 +9,6 @@ class Product extends Equatable {
   String picture;
   int categoryId;
 
-
   Product(
       {this.id,
       this.title,
@@ -27,4 +26,14 @@ class Product extends Equatable {
         picture: json['picture'],
         categoryId: json['category_id']);
   }
+
+  Map<String, dynamic> toMap() => <String, dynamic>{
+    'id': id,
+    'description': description,
+    'title': title,
+    'price': price,
+    'picture': picture,
+    'category_id': categoryId
+  };
+
 }

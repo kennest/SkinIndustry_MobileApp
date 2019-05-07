@@ -18,6 +18,8 @@ dependencies:
   http:
   image_picker: ^0.5.3
   flutter_bloc: ^0.7.0
+  sembast: ^1.15.2
+  objectdb: ^1.0.5
   bloc: ^0.9.3
   numberpicker: ^1.0.0
   cached_network_image: ^0.6.1
@@ -26,17 +28,16 @@ dependencies:
   shared_preferences: ^0.5.1+1
   url_launcher: ^5.0.1
   path_provider: ^0.5.0+1
-  #connectivity: ^0.4.2
+  flutter_offline: "^0.2.4"
   rxdart: ^0.18.1
   equatable: ^0.2.0
   flutter_secure_storage: ^3.2.0
-  flutter_redux: ^0.5.3
-  redux: ^3.0.0
   flutter_staggered_grid_view: "^0.2.7"
   dartfix: ^0.1.4
   flutter_form_builder: ^2.0.3
   flutter_circular_chart: ^0.1.0
   permission_handler: '^2.2.0'
+  google_maps_flutter: ^0.5.7
   
 
   # The following adds the Cupertino Icons font to your application.
