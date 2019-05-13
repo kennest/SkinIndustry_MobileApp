@@ -15,26 +15,15 @@ class _SignupPageState extends State<SignupPage> {
       body: ListView(
         children: <Widget>[
           Align(
-            alignment: Alignment.topRight,
-            child: FlatButton(
-               onPressed: (){
-                     Navigator.push(context, CupertinoPageRoute(
-                          builder: (context)=>LoginPage()
-                        ));
-                  },
-              child: Text('Log In'),
-            ),
-          ),
-          Align(
             alignment: Alignment.topLeft,
             child: Column(
               children: <Widget>[
                 ListTile(
                   title: Text(
-                    "Welcome Back !",
+                    "Créer votre compte !",
                     style: TextStyle(fontSize: 30.0),
                   ),
-                  subtitle: Text('Log back into your account',
+                  subtitle: Text('Remplissez les champs ci-dessous et on y va',
                       style: TextStyle(fontSize: 15.0)),
                 )
               ],
@@ -101,7 +90,7 @@ class _SignupPageState extends State<SignupPage> {
                           builder: (context)=>ShoppingPage()
                         ));
                   },
-                  child: Text('Sign Up',style: TextStyle(color: Colors.white,fontSize: 20.0),),
+                  child: Text('Créer',style: TextStyle(color: Colors.white,fontSize: 20.0),),
                 ),
                 ),
                   
@@ -109,11 +98,11 @@ class _SignupPageState extends State<SignupPage> {
             ),
           ),
            Container(
-                  height: 150.0,
+                  height: 200.0,
                   margin: EdgeInsets.only(top: 25.0),
                   decoration: BoxDecoration(
                     image: DecorationImage(
-                      image: NetworkImage('https://3.bp.blogspot.com/-i3OIbIhSBcU/WevH6M1yPXI/AAAAAAAACDc/2_EtN0lcuAU0ubDtJ3khC0pMjAMysc2jQCEwYBhgL/s1600/IMG_9935.JPG'),
+                      image: AssetImage('images/ebene.jpg'),
                       fit: BoxFit.cover
                     )
                   ),

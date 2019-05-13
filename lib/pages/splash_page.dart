@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'pages.dart';
 
 
@@ -10,6 +11,7 @@ class SplashPage extends StatefulWidget {
 }
 
 class _SplashPageState extends State<SplashPage> {
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -20,8 +22,8 @@ class _SplashPageState extends State<SplashPage> {
               width: MediaQuery.of(context).size.width,
               decoration: BoxDecoration(
                   image: DecorationImage(
-                      image: NetworkImage(
-                        'https://www.pcaskin.com/skin/frontend/mw2consulting/consumers/images/consumers/topmenu/sensitive.jpg',
+                      image: AssetImage(
+                        'images/background.jpg',
                       ),
                       fit: BoxFit.cover)),
               child: Stack(
@@ -38,18 +40,21 @@ class _SplashPageState extends State<SplashPage> {
                           child: Column(
                             children: <Widget>[
                               ListTile(
+                                leading: Image.asset('images/new-log.png',height: 150.0,),
                                 title: Text(
                                   "Perfect Skin Industry",
-                                  style: TextStyle(fontSize: 30.0),
+                                  style: TextStyle(fontSize: 17.0),
                                 ),
-                                subtitle: Text('Service de soins de peaux',
+                                subtitle: Text('Bienvenue dans la famille',
                                     style: TextStyle(fontSize: 15.0)),
-                              )
+                              ),
                             ],
                           ),
                         )),
                   ),
-                  Align(
+                  Padding(
+                    padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 10.0),
+                    child: Align(
                       alignment: Alignment.bottomCenter,
                       child: SizedBox(
                         height: 45.0,
@@ -60,15 +65,17 @@ class _SplashPageState extends State<SplashPage> {
                             Navigator.push(
                                 context,
                                 CupertinoPageRoute(
-                                    builder: (context) => UserTypePage()));
+                                    builder: (context) => LoginPage()));
                           },
                           child: Text(
-                            'Start shopping',
+                            'Rejoindre Perfect Skin Industry',
                             style:
                                 TextStyle(color: Colors.white, fontSize: 15.0),
                           ),
                         ),
                       )),
+                  )
+                  ,
                 ],
               ))
         ],

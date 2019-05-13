@@ -17,25 +17,15 @@ class _LoginPageState extends State<LoginPage> {
       body: ListView(
         children: <Widget>[
           Align(
-            alignment: Alignment.topRight,
-            child: FlatButton(
-              onPressed: () {
-                Navigator.push(context,
-                    CupertinoPageRoute(builder: (context) => SignupPage()));
-              },
-              child: Text('Sign Up'),
-            ),
-          ),
-          Align(
             alignment: Alignment.topLeft,
             child: Column(
               children: <Widget>[
                 ListTile(
                   title: Text(
-                    "Welcome Back !",
+                    "Quelle est votre adresse e-mail ?",
                     style: TextStyle(fontSize: 30.0),
                   ),
-                  subtitle: Text('Log back into your account',
+                  subtitle: Text('Entrez votre adresse e-mail pour vous connecter ou créer votre compte',
                       style: TextStyle(fontSize: 15.0)),
                 )
               ],
@@ -54,13 +44,7 @@ class _LoginPageState extends State<LoginPage> {
                 SizedBox(
                   height: 5.0,
                 ),
-                TextFormField(
-                  keyboardType: TextInputType.emailAddress,
-                  obscureText: true,
-                  decoration: InputDecoration(
-                    labelText: "Your Password",
-                  ),
-                ),
+      
                 Align(
                   alignment: Alignment.bottomLeft,
                   child: Row(
@@ -102,23 +86,25 @@ class _LoginPageState extends State<LoginPage> {
                       }
                     },
                     child: Text(
-                      'Log in',
+                      'Suivant',
                       style: TextStyle(color: Colors.white, fontSize: 20.0),
                     ),
                   ),
                 ),
+                FlatButton(
+                  onPressed: (){
+                    Navigator.push(context,
+                    CupertinoPageRoute(builder: (context) => SignupPage()));
+                  },
+                  textColor: Colors.pink[400],
+                  child: Text("Créer un compte"),
+                )
               ],
             ),
           ),
-          CachedNetworkImage(
-            height: 250.0,
+          Image.asset('images/ebene.jpg',
+            height: 350.0,
             fit: BoxFit.cover,
-            imageUrl:
-                'https://3.bp.blogspot.com/-i3OIbIhSBcU/WevH6M1yPXI/AAAAAAAACDc/2_EtN0lcuAU0ubDtJ3khC0pMjAMysc2jQCEwYBhgL/s1600/IMG_9935.JPG',
-            placeholder: (context, url) => Center(
-                  child: CircularProgressIndicator(),
-                ),
-            errorWidget: (context, url, error) => Icon(Icons.error),
           ),
         ],
       ),

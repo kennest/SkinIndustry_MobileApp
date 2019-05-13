@@ -3,8 +3,6 @@ import 'dart:io';
 import 'package:objectdb/objectdb.dart';
 import 'package:mobile_ecommerce/models/product.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:sembast/sembast.dart';
-import 'package:sembast/sembast_io.dart';
 
 class DBProvider {
   static final DBProvider _singleton = new DBProvider._internal();
