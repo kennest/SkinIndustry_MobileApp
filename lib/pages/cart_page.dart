@@ -5,8 +5,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mobile_ecommerce/bloc/cart/cart_bloc.dart';
 import 'package:mobile_ecommerce/bloc/cart/cart_event.dart';
 import 'package:mobile_ecommerce/bloc/cart/cart_state.dart';
-import 'package:mobile_ecommerce/models/cart.dart';
-import 'package:mobile_ecommerce/models/product.dart';
+import 'package:mobile_ecommerce/floordb/models/cart.dart';
+import 'package:mobile_ecommerce/floordb/models/product.dart';
 import 'package:mobile_ecommerce/pages/ui/colors.dart';
 import 'package:scoped_model/scoped_model.dart';
 

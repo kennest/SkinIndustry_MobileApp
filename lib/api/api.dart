@@ -1,11 +1,10 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
-
 import 'package:http/http.dart' as http;
-import 'package:mobile_ecommerce/database/db_provider.dart';
-import 'package:mobile_ecommerce/models/category.dart';
-import 'package:mobile_ecommerce/models/product.dart';
+import 'package:mobile_ecommerce/floordb/database.dart';
+import 'package:mobile_ecommerce/floordb/models/category.dart';
+import 'package:mobile_ecommerce/floordb/models/product.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:dio/dio.dart';
 
@@ -15,6 +14,7 @@ class Api {
   List<Category> categories = [];
   List<Product> products = [];
   var connectivity;
+
 
   Future<List<Product>> fetchProducts({int categoryId = 1}) async {
 
@@ -35,7 +35,11 @@ class Api {
 
       products = products.where((p) => (p.categoryId == categoryId)).toList();
 
-      DBProvider().insertmanyProducts(products);
+      final database = await $FloorAppDatabase.databaseBuilder('app_database.db').build();
+      for(var p in products){
+        database.productDao.insertProduct(p);
+      }
+      //DBProvider().insertmanyProducts(products);
 
       print("******Products filtered********");
       print("Products Lenght -> ${products.length}");
@@ -86,6 +90,12 @@ class Api {
         categories.add(c);
       });
     }
+    final database = await $FloorAppDatabase.databaseBuilder('app_database.db').build();
+    for(var c in categories){
+      database.categoryDao.insertCategory(c);
+    }
+    var n=Category(10,"Kits Perfect Skin",'icon.png');
+    categories.insert(0, n);
     return categories;
   }
 }

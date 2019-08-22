@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
-import 'package:mobile_ecommerce/models/category.dart';
-import 'package:mobile_ecommerce/models/product.dart';
+import 'package:mobile_ecommerce/floordb/models/category.dart';
+import 'package:mobile_ecommerce/floordb/models/product.dart';
 
 abstract class ProductState extends Equatable {
   ProductState([List props = const []]) : super(props);

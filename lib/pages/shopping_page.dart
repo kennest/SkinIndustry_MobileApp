@@ -8,9 +8,9 @@ import 'package:mobile_ecommerce/bloc/cart/cart_state.dart';
 import 'package:mobile_ecommerce/bloc/products/product_state.dart';
 import 'package:mobile_ecommerce/bloc/products/products_bloc.dart';
 import 'package:mobile_ecommerce/bloc/products/products_event.dart';
-import 'package:mobile_ecommerce/models/cart.dart';
-import 'package:mobile_ecommerce/models/category.dart';
-import 'package:mobile_ecommerce/models/product.dart';
+import 'package:mobile_ecommerce/floordb/models/cart.dart';
+import 'package:mobile_ecommerce/floordb/models/category.dart';
+import 'package:mobile_ecommerce/floordb/models/product.dart';
 import 'package:mobile_ecommerce/pages/pages.dart';
 import 'package:scoped_model/scoped_model.dart';
 
@@ -131,7 +131,9 @@ class _ShoppingPageState extends State<ShoppingPage>
                     ),
                     delegate: SliverChildBuilderDelegate(
                       (BuildContext context, int index) {
-                        return cardItem(context, state.products[index], state);
+                        return Container(
+                          child: cardItem(context, state.products[index], state),
+                        );
                       },
                       childCount: state.products.length,
                     ),
@@ -252,10 +254,10 @@ class _ShoppingPageState extends State<ShoppingPage>
   Widget cardItem(BuildContext ctx, Product p, ProductState productstate) {
     print('Cart Rebuild ${p.id}');
     return Card(
-      margin: EdgeInsets.all(8.0),
+      margin: EdgeInsets.all(1.0),
       color: Colors.white,
       child: Stack(
-        fit: StackFit.expand,
+        fit: StackFit.passthrough,
         overflow: Overflow.visible,
         children: <Widget>[
           Stack(
@@ -288,22 +290,29 @@ class _ShoppingPageState extends State<ShoppingPage>
                                                   product: p,
                                                 )));
                                   },
-                                  title: Text(p.title),
+                                  title:  Text(p.description),
                                   subtitle: Column(
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                     children: <Widget>[
-                                      Text(p.description),
                                       Text(
-                                        '${p.price}',
+                                        '${p.price} FCFA',
                                         style: TextStyle(
                                             fontWeight: FontWeight.w700,
                                             fontSize: 15.0),
-                                      )
+                                      ),
+                                      OutlineButton(
+                                        padding: EdgeInsets.fromLTRB(45.0, 0.0, 45.0, 0.0),
+                                        child: Text("Acheter",textAlign: TextAlign.center,),
+                                        onPressed: (){},
+                                      ),
+
                                     ],
                                   ),
                                 ),
                               ),
+
                             ],
                           )),
                     ],
@@ -315,30 +324,32 @@ class _ShoppingPageState extends State<ShoppingPage>
           BlocBuilder(
             bloc: cartBloc,
             builder: (ctx, CartState cardstate) {
+              // ignore: missing_return
               if (cardstate is CartUninitialized) {
                 return Positioned(
-                    top: 180.0,
+                    top: 0.0,
                     left: 120.0,
                     child: Container(
-                      width: 35.0,
-                      height: 35.0,
+                      width: 50.0,
+                      height: 50.0,
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
                         color: Colors.pink,
                       ),
                       child: IconButton(
-                        highlightColor: Colors.pink,
-                        splashColor: Colors.pink[100],
-                        color: Colors.pink,
-                        icon: Icon(
-                          Icons.add_shopping_cart,
-                          size: 20.0,
-                          color: Colors.white,
-                        ),
-                        onPressed: () {
-                          cartBloc.dispatch(new AddToCart(product: p, qte: 1));
-                        },
-                      ),
+                            highlightColor: Colors.pink,
+                            splashColor: Colors.pink[100],
+                            color: Colors.pink,
+                            icon: Icon(
+                              Icons.add_shopping_cart,
+                              size: 20.0,
+                              color: Colors.white,
+                            ),
+                            onPressed: () {
+                              cartBloc.dispatch(new AddToCart(product: p, qte: 1));
+                            },
+                          ),
+
                     ));
               } else if (cardstate is ProductAdded ||
                   cardstate is ProductRemoved) {

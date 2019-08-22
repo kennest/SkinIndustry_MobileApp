@@ -4,7 +4,7 @@ import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
 import 'package:mobile_ecommerce/bloc/cart/cart_event.dart';
 import 'package:mobile_ecommerce/bloc/cart/cart_state.dart';
-import 'package:mobile_ecommerce/models/cart.dart';
+import 'package:mobile_ecommerce/floordb/models/cart.dart';
 import 'package:mobile_ecommerce/repository/user_repository.dart';
 import 'package:rxdart/rxdart.dart';
 

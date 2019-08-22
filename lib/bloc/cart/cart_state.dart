@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import 'package:mobile_ecommerce/models/cart.dart';
+import 'package:mobile_ecommerce/floordb/models/cart.dart';
 
 abstract class CartState extends Equatable {
   CartState([List props = const []]) : super(props);

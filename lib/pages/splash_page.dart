@@ -23,41 +23,18 @@ class _SplashPageState extends State<SplashPage> {
               decoration: BoxDecoration(
                   image: DecorationImage(
                       image: AssetImage(
-                        'images/background.jpg',
+                        'images/splashbg.png',
                       ),
                       fit: BoxFit.cover)),
               child: Stack(
                 children: <Widget>[
+
                   Padding(
-                    padding: EdgeInsets.only(top: 80.0),
-                    child: Align(
-                        alignment: Alignment.topLeft,
-                        child: Container(
-                          decoration: BoxDecoration(
-                            color: Colors.white.withOpacity(0.7),
-                          ),
-                          height: 80.0,
-                          child: Column(
-                            children: <Widget>[
-                              ListTile(
-                                leading: Image.asset('images/new-log.png',height: 150.0,),
-                                title: Text(
-                                  "Perfect Skin Industry",
-                                  style: TextStyle(fontSize: 17.0),
-                                ),
-                                subtitle: Text('Bienvenue dans la famille',
-                                    style: TextStyle(fontSize: 15.0)),
-                              ),
-                            ],
-                          ),
-                        )),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 10.0),
+                    padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 20.0),
                     child: Align(
                       alignment: Alignment.bottomCenter,
                       child: SizedBox(
-                        height: 45.0,
+                        height: 50.0,
                         child: RaisedButton(
                           elevation: 8.0,
                           color: Colors.pink,

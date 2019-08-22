@@ -1,4 +1,5 @@
-import 'package:mobile_ecommerce/models/product.dart';
+
+import 'package:mobile_ecommerce/floordb/models/product.dart';
 import 'package:scoped_model/scoped_model.dart';
 
 class Cart extends Model {

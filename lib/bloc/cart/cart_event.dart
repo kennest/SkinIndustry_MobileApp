@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
-import 'package:mobile_ecommerce/models/product.dart';
+import 'package:mobile_ecommerce/floordb/models/product.dart';
 
 abstract class CartEvent extends Equatable{
    CartEvent([List props = const []]) : super(props);

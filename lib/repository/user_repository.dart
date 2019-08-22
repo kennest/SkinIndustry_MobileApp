@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:meta/meta.dart';
-import 'package:mobile_ecommerce/models/cart.dart';
+import 'package:mobile_ecommerce/floordb/models/cart.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class UserRepository {
