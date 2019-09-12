@@ -63,6 +63,20 @@ const String AllSells=r'''
 }
 ''';
 
+const String createSell=r'''
+mutation addSell($client_id:ID,$customer_id:ID,$productIds:[ID!]){
+  createSell(
+    clientId: "$client_id",
+    customerId: "$customer_id", 
+    productsIds: "$productsIds") {
+    id
+    products {
+      id
+    }
+  }
+}
+''';
+
 const String createClient=r'''
 mutation addClient($email:String!,$password:String!){
   createClient(email: "$email", password: "$password") {
