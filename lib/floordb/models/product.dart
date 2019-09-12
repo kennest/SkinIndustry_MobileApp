@@ -13,14 +13,13 @@ import 'category.dart';
 )
 class Product{
   @primaryKey
-  final int id;
-  final String title;
-  final String description;
-  final int price;
-  final String picture;
+   int id;
+   String title;
+   String description;
+   int price;
+   String picture;
   @ColumnInfo(name: 'category_id')
-  final int categoryId;
-
+   int categoryId;
 
   Product(
       this.id,

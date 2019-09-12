@@ -1,44 +1,71 @@
 import 'dart:async';
-
-import 'package:bloc/bloc.dart';
-import 'package:meta/meta.dart';
-import 'package:mobile_ecommerce/bloc/cart/cart_event.dart';
-import 'package:mobile_ecommerce/bloc/cart/cart_state.dart';
+import 'package:flutter/widgets.dart';
+import 'package:mobile_ecommerce/api/api.dart';
+import 'package:mobile_ecommerce/api/graphcool_api.dart';
+import 'package:mobile_ecommerce/bloc/products/product_bloc.dart';
 import 'package:mobile_ecommerce/floordb/models/cart.dart';
-import 'package:mobile_ecommerce/repository/user_repository.dart';
-import 'package:rxdart/rxdart.dart';
+import 'package:mobile_ecommerce/floordb/models/category.dart';
+import 'package:mobile_ecommerce/floordb/models/product.dart';
+import 'package:mobile_ecommerce/repository/user_controller.dart';
 
-class CartBloc extends Bloc<CartEvent, CartState> {
-  Cart cart = Cart();
-  UserRepository userRepository = UserRepository();
+enum CartStatus { initial, loading, added, removed,error }
+enum ProductStatus { initial, loading, loaded,error }
 
-  CartBloc({@required cart});
+class CartBloc extends ChangeNotifier {
+  Cart _cart = Cart();
+  Product _product;
+  ProductBloc _productBloc=ProductBloc();
+  UserController _userRepository = UserController();
+  CartStatus _status = CartStatus.initial;
 
-  @override
-  Stream<CartEvent> transform(Stream<CartEvent> events) {
-    return (events as Observable<CartEvent>)
-        .debounce(Duration(milliseconds: 200));
+  List<Category> _categories = [];
+  List<Product> _products = [];
+  ProductStatus _productStatus = ProductStatus.initial;
+
+  //GETTERS
+  Cart get cart => _cart;
+  UserController get userRepository => _userRepository;
+  CartStatus get status => _status;
+  ProductBloc get productBloc => _productBloc;
+  List<Category> get categories => _categories;
+
+  List<Product> get products => _products;
+
+  ProductStatus get productStatus => _productStatus;
+  // ignore: unnecessary_getters_setters
+  get product => _product;
+
+  Future<void> addProduct(Product p,int qte) async {
+      _product=p;
+      _cart.addToCart(product, qte);
+      _status=CartStatus.added;
+      notifyListeners();
   }
 
-  @override
-  CartState get initialState => CartUninitialized();
+  Future<void> removeProduct(Product p,int qte) async {
+    _product=p;
+    _cart.removeFromCart(product, qte);
+    _status=CartStatus.removed;
+    notifyListeners();
+  }
 
-  @override
-  Stream<CartState> mapEventToState(
-      CartState currentState, CartEvent event) async* {
-    if (event is AddToCart) {
-      yield CartUninitialized();
-      print('cartBloc: AddToCart');
-      cart.addToCart(event.product, event.qte);
-      await userRepository.saveCartData(cart);
-      print('cart Size: ${cart.Hcart.values.length}');
-      yield ProductAdded(cart: cart);
-    } else if (event is RemoveFromCart) {
-      yield CartUninitialized();
-      print('cartBloc: RemoveFromCart');
-      cart.removeFromCart(event.product, 1);
-       print('cart Size: ${cart.Hcart.values.length}');
-      yield ProductRemoved(cart: cart);
+  Future<void> getData(int catId) async {
+
+    GraphCoolApi().addCategory("Test category");
+    GraphCoolApi().getAllCategories();
+
+    _productStatus = ProductStatus.loading;
+    _status = CartStatus.loading;
+    try {
+      _categories = await Api().fetchCategories();
+      _products = await Api().fetchProducts(categoryId: catId);
+      _productStatus = ProductStatus.loaded;
+      _status = CartStatus.initial;
+      notifyListeners();
+    } catch (_) {
+      _productStatus = ProductStatus.initial;
+      _status = CartStatus.initial;
+      notifyListeners();
     }
   }
 }

@@ -9,13 +9,17 @@ import 'package:path_provider/path_provider.dart';
 import 'package:dio/dio.dart';
 
 class Api {
-  var url = "https://my-json-server.typicode.com/kennest/json-db/";
+
+  static String url = "https://my-json-server.typicode.com/kennest/json-db/";
 
   List<Category> categories = [];
   List<Product> products = [];
   var connectivity;
 
+  // ignore: non_constant_identifier_names
+  static final String DB_PATH='app_database.db';
 
+  //Get All Products
   Future<List<Product>> fetchProducts({int categoryId = 1}) async {
 
     downloadFile(url: '${url}products');
@@ -33,14 +37,16 @@ class Api {
         products.add(p);
       });
 
-      products = products.where((p) => (p.categoryId == categoryId)).toList();
+      if(categoryId!=10){
+        products = products.where((p) => (p.categoryId == categoryId)).toList();
+      }
 
-      final database = await $FloorAppDatabase.databaseBuilder('app_database.db').build();
+      final database = await $FloorAppDatabase.databaseBuilder(DB_PATH).build();
       for(var p in products){
+        p.id=null;
         database.productDao.insertProduct(p);
       }
       //DBProvider().insertmanyProducts(products);
-
       print("******Products filtered********");
       print("Products Lenght -> ${products.length}");
       print("******Products filtered********");
@@ -75,6 +81,7 @@ class Api {
     });
   }
 
+  //Get all Categories
   Future<List<Category>> fetchCategories() async {
     final response = await http.get('${url}categories');
     if (response.statusCode == 200) {
@@ -90,12 +97,12 @@ class Api {
         categories.add(c);
       });
     }
-    final database = await $FloorAppDatabase.databaseBuilder('app_database.db').build();
+    final database = await $FloorAppDatabase.databaseBuilder(DB_PATH).build();
     for(var c in categories){
+      c.id=null;
       database.categoryDao.insertCategory(c);
     }
-    var n=Category(10,"Kits Perfect Skin",'icon.png');
-    categories.insert(0, n);
+
     return categories;
   }
 }

@@ -4,7 +4,7 @@ import 'package:meta/meta.dart';
 import 'package:mobile_ecommerce/floordb/models/cart.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class UserRepository {
+class UserController {
   Future<String> authenticate({
     @required String username,
     @required String password,
@@ -21,8 +21,8 @@ class UserRepository {
 
   Future<void> saveCartData(Cart cart) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setString("cart", cart.Hbox.toString());
-    print('cart saved: ${cart.Hbox.toString()}');
+    prefs.setString("cart", cart.hBox.toString());
+    print('cart saved: ${cart.hBox.toString()}');
   }
 
   Future<void> persistToken(String token) async {

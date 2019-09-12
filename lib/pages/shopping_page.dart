@@ -1,18 +1,11 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mobile_ecommerce/bloc/cart/cart_bloc.dart';
-import 'package:mobile_ecommerce/bloc/cart/cart_event.dart';
-import 'package:mobile_ecommerce/bloc/cart/cart_state.dart';
-import 'package:mobile_ecommerce/bloc/products/product_state.dart';
-import 'package:mobile_ecommerce/bloc/products/products_bloc.dart';
-import 'package:mobile_ecommerce/bloc/products/products_event.dart';
-import 'package:mobile_ecommerce/floordb/models/cart.dart';
 import 'package:mobile_ecommerce/floordb/models/category.dart';
 import 'package:mobile_ecommerce/floordb/models/product.dart';
 import 'package:mobile_ecommerce/pages/pages.dart';
-import 'package:scoped_model/scoped_model.dart';
+import 'package:provider/provider.dart';
 
 class ShoppingPage extends StatefulWidget {
   ShoppingPage({Key key}) : super(key: key);
@@ -20,19 +13,17 @@ class ShoppingPage extends StatefulWidget {
   _ShoppingPageState createState() => _ShoppingPageState();
 }
 
-class _ShoppingPageState extends State<ShoppingPage>
-    with TickerProviderStateMixin {
+class _ShoppingPageState extends State<ShoppingPage> with TickerProviderStateMixin {
   TabController tabController;
   final ScrollController _scrollController = ScrollController();
-  ProductsBloc productBloc = ProductsBloc();
   Map<int, Product> cart = Map();
-  CartBloc cartBloc = CartBloc(cart: Cart());
+  CartBloc cartBloc = CartBloc();
   int selectedtab = 0;
 
   @override
   void initState() {
     super.initState();
-    productBloc.dispatch(Fetch(categoryId: 1));
+    cartBloc.getData(10);
   }
 
   @override
@@ -40,108 +31,114 @@ class _ShoppingPageState extends State<ShoppingPage>
     return Scaffold(
       appBar: getAppBar(),
       backgroundColor: Color.fromARGB(255, 244, 244, 244),
-      body: BlocBuilder(
-          bloc: productBloc,
-          builder: (BuildContext context, ProductState state) {
-            if (state is ProductUninitialized) {
+      body:Consumer<CartBloc>(
+          builder: (context, bloc, child){
+            return shoppingBody(bloc);
+          }),
+    );
+  }
+
+  Widget shoppingBody(CartBloc bloc){
+          if (bloc.status==CartStatus.initial) {
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          } else if (bloc.status ==CartStatus.added) {
+            var n=Category(10,"Kits Perfect Skin",'icon.png');
+            tabController = TabController(
+                length: bloc.cart.hBox.values.length,
+                vsync: this,
+                initialIndex: selectedtab);
+            if (bloc.cart.hBox.length == 0) {
               return Center(
-                child: CircularProgressIndicator(),
-              );
-            } else if (state is ProductLoaded) {
-              tabController = TabController(
-                  length: state.categories.length,
-                  vsync: this,
-                  initialIndex: selectedtab);
-              if (state.products.length == 0) {
-                return Center(
-                  child: IconButton(
-                    highlightColor: Colors.pink[100],
-                    splashColor: Colors.pink[200],
-                    icon: Icon(
-                      Icons.refresh,
-                      color: Colors.pink[400],
-                    ),
-                    onPressed: () {
-                      productBloc.dispatch(Fetch(categoryId: 1));
-                    },
+                child: IconButton(
+                  highlightColor: Colors.pink[100],
+                  splashColor: Colors.pink[200],
+                  icon: Icon(
+                    Icons.refresh,
+                    color: Colors.pink[400],
                   ),
-                );
-              }
-              return CustomScrollView(
-                controller: _scrollController,
-                slivers: <Widget>[
-                  SliverToBoxAdapter(
-                      child: Container(
-                          color: Colors.white,
-                          child: Column(
-                            children: <Widget>[
-                              Material(
-                                color: backgroundColor,
-                                child: TabBar(
-                                    indicatorSize: TabBarIndicatorSize.label,
-                                    labelStyle: TextStyle(
-                                        fontSize: 25.0,
-                                        fontWeight: FontWeight.w600),
-                                    isScrollable: true,
-                                    unselectedLabelColor:
-                                        Color.fromARGB(200, 200, 200, 200),
-                                    unselectedLabelStyle: TextStyle(
-                                        color: Colors.grey,
-                                        fontSize: 16.0,
-                                        fontWeight: FontWeight.w600),
-                                    indicatorColor: Colors.pink,
-                                    controller: tabController,
-                                    tabs: getTabs(state.categories)),
-                              ),
-                              Material(
-                                color: backgroundColor,
-                                child: Padding(
-                                  padding: EdgeInsets.fromLTRB(
-                                      15.0, 20.0, 15.0, 10.0),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: <Widget>[
-                                      Text(
-                                        '${state.products.length} products',
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.w500),
-                                      ),
-                                      new DropdownButton<String>(
-                                        value: 'Popular',
-                                        items: <String>['Popular', 'Recents']
-                                            .map((String value) {
-                                          return DropdownMenuItem<String>(
-                                            value: value,
-                                            child: Text(value),
-                                          );
-                                        }).toList(),
-                                        onChanged: (_) {},
-                                      ),
-                                    ],
-                                  ),
+                  onPressed: () {
+                    cartBloc.getData(1);
+                  },
+                ),
+              );
+            }
+            return CustomScrollView(
+              controller: _scrollController,
+              slivers: <Widget>[
+                SliverToBoxAdapter(
+                    child: Container(
+                        color: Colors.white,
+                        child: Column(
+                          children: <Widget>[
+                            Material(
+                              color: backgroundColor,
+                              child: TabBar(
+                                  indicatorSize: TabBarIndicatorSize.label,
+                                  labelStyle: TextStyle(
+                                      fontSize: 25.0,
+                                      fontWeight: FontWeight.w600),
+                                  isScrollable: true,
+                                  unselectedLabelColor:
+                                  Color.fromARGB(200, 200, 200, 200),
+                                  unselectedLabelStyle: TextStyle(
+                                      color: Colors.grey,
+                                      fontSize: 16.0,
+                                      fontWeight: FontWeight.w600),
+                                  indicatorColor: Colors.pink,
+                                  controller: tabController,
+                                  tabs: getTabs(bloc.categories)),
+                            ),
+                            Material(
+                              color: backgroundColor,
+                              child: Padding(
+                                padding: EdgeInsets.fromLTRB(
+                                    15.0, 20.0, 15.0, 10.0),
+                                child: Row(
+                                  mainAxisAlignment:
+                                  MainAxisAlignment.spaceBetween,
+                                  children: <Widget>[
+                                    Text(
+                                      '${cartBloc.productBloc.products.length} products',
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.w500),
+                                    ),
+                                    new DropdownButton<String>(
+                                      value: 'Popular',
+                                      items: <String>['Popular', 'Recents']
+                                          .map((String value) {
+                                        return DropdownMenuItem<String>(
+                                          value: value,
+                                          child: Text(value),
+                                        );
+                                      }).toList(),
+                                      onChanged: (_) {},
+                                    ),
+                                  ],
                                 ),
-                              )
-                            ],
-                          ))),
-                  SliverGrid(
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2,
-                      childAspectRatio: 0.8,
-                    ),
-                    delegate: SliverChildBuilderDelegate(
-                      (BuildContext context, int index) {
-                        return Container(
-                          child: cardItem(context, state.products[index], state),
-                        );
-                      },
-                      childCount: state.products.length,
-                    ),
+                              ),
+                            )
+                          ],
+                        ))),
+                SliverGrid(
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                    childAspectRatio: 0.8,
                   ),
-                ],
-              );
-            } else if (state is ProductError) {
-              return Center(
+                  delegate: SliverChildBuilderDelegate(
+                        (BuildContext context, int index) {
+                      return Container(
+                        child: cardItem(context, cartBloc.productBloc.products[index], cartBloc),
+                      );
+                    },
+                    childCount: cartBloc.productBloc.products.length,
+                  ),
+                ),
+              ],
+            );
+          } else if (bloc.status == CartStatus.loading) {
+            return Center(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -154,17 +151,16 @@ class _ShoppingPageState extends State<ShoppingPage>
                         color: Colors.pink[400],
                       ),
                       onPressed: () {
-                        productBloc.dispatch(Fetch(categoryId: 1));
+                        bloc.getData(1);
                       },
                     ),
                     Text("Reesayer",style: TextStyle(color: Colors.pink[400]),)
                   ],
                 )
 
-              );
-            }
-          }),
-    );
+            );
+          }
+
   }
 
   List<Widget> getTabView({int number}) {
@@ -185,7 +181,7 @@ class _ShoppingPageState extends State<ShoppingPage>
             print('${tabController.index} /${c.id}');
             selectedtab = (c.id - 1);
             tabController.animateTo(c.id - 1);
-            productBloc.dispatch(Fetch(categoryId: c.id));
+            cartBloc.productBloc.getData(c.id);
           },
         ),
       ));
@@ -201,11 +197,8 @@ class _ShoppingPageState extends State<ShoppingPage>
       backgroundColor: backgroundColor,
       elevation: 0.0,
       actions: <Widget>[
-        ScopedModel<Cart>(
-          model: cartBloc.cart,
-          child: ScopedModelDescendant<Cart>(
-            rebuildOnChange: true,
-            builder: (context, child, model) {
+    Consumer<CartBloc>(
+    builder: (context, bloc, child){
               return Stack(
                 children: <Widget>[
                   IconButton(
@@ -219,10 +212,10 @@ class _ShoppingPageState extends State<ShoppingPage>
                           context,
                           CupertinoPageRoute(
                               builder: (context) =>
-                                  CartPage(cartBloc: cartBloc)));
+                                  CartPage()));
                     },
                   ),
-                  (model.Hcart.values.length >= 0)
+                  (bloc.cart.hBox.values.length >= 0)
                       ? Positioned(
                           left: 25.0,
                           child: Container(
@@ -232,7 +225,7 @@ class _ShoppingPageState extends State<ShoppingPage>
                                 borderRadius: BorderRadius.circular(62.0),
                                 color: Colors.pink[500]),
                             child: Center(
-                              child: Text('${model.Hcart.values.length}'),
+                              child: Text('${bloc.cart.hBox.values.length}'),
                             ),
                           ),
                         )
@@ -241,7 +234,6 @@ class _ShoppingPageState extends State<ShoppingPage>
               );
             },
           ),
-        ),
         IconButton(
           color: Colors.pinkAccent,
           icon: Icon(Icons.menu, size: 30.0),
@@ -251,7 +243,7 @@ class _ShoppingPageState extends State<ShoppingPage>
     );
   }
 
-  Widget cardItem(BuildContext ctx, Product p, ProductState productstate) {
+  Widget cardItem(BuildContext ctx, Product p, CartBloc bloc) {
     print('Cart Rebuild ${p.id}');
     return Card(
       margin: EdgeInsets.all(1.0),
@@ -321,12 +313,9 @@ class _ShoppingPageState extends State<ShoppingPage>
               ),
             ],
           ),
-          BlocBuilder(
-            bloc: cartBloc,
-            builder: (ctx, CartState cardstate) {
               // ignore: missing_return
-              if (cardstate is CartUninitialized) {
-                return Positioned(
+              (bloc.status== CartStatus.initial) ?
+                 Positioned(
                     top: 0.0,
                     left: 120.0,
                     child: Container(
@@ -346,14 +335,13 @@ class _ShoppingPageState extends State<ShoppingPage>
                               color: Colors.white,
                             ),
                             onPressed: () {
-                              cartBloc.dispatch(new AddToCart(product: p, qte: 1));
+                              cartBloc.addProduct( p, 1);
                             },
                           ),
 
-                    ));
-              } else if (cardstate is ProductAdded ||
-                  cardstate is ProductRemoved) {
-                return Positioned(
+                    )):
+
+                Positioned(
                     top: 180.0,
                     left: 120.0,
                     child: Container(
@@ -363,45 +351,9 @@ class _ShoppingPageState extends State<ShoppingPage>
                         shape: BoxShape.circle,
                         color: Colors.pink,
                       ),
-                      child: ScopedModel<Cart>(
-                        model: cartBloc.cart,
-                        child: ScopedModelDescendant<Cart>(
-                          rebuildOnChange: true,
-                          builder: (context, child, model) {
-                            if (model.Hbox.containsValue(p.id)) {
-                              print('${p.id} contained in Cart');
-                              model.Hbox.forEach((k, v) {
-                                print('$k ');
-                              });
-                            }
-                            return (model.Hbox.containsValue(p.id))
-                                ? null
-                                : IconButton(
-                                    highlightColor: Colors.pink,
-                                    splashColor: Colors.pink[100],
-                                    color: (model.Hbox.containsValue(p.id))
-                                        ? Colors.grey
-                                        : Colors.pink,
-                                    icon: Icon(
-                                      Icons.add_shopping_cart,
-                                      size: 20.0,
-                                      color: Colors.white,
-                                    ),
-                                    onPressed: (model.Hbox.containsValue(p.id))
-                                        ? () {}
-                                        : () {
-                                            print('cartBtn pressed');
-                                            cartBloc.dispatch(
-                                                AddToCart(product: p, qte: 1));
-                                          },
-                                  );
-                          },
-                        ),
-                      ),
-                    ));
-              }
-            },
-          ),
+                      child:Text(""),
+    ))
+
         ],
       ),
     );
@@ -409,7 +361,6 @@ class _ShoppingPageState extends State<ShoppingPage>
 
   @override
   void dispose() {
-    productBloc.dispose();
     cartBloc.dispose();
     super.dispose();
   }

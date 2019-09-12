@@ -4,7 +4,6 @@ import 'package:floor/floor.dart';
 class User {
   @primaryKey
   final String id;
-
   final String name;
 
   User(this.id, this.name);
